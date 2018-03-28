@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Movie’s Entral</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<style type="text/css">
+	body{
+		background-color: #f4f5f7;
+	}
+		.italic {
+			font-style:oblique;
+		}
+		.padding20{
+			padding-left: 40px; 
+		}
+		.div_1{
+			margin-top:10px;
+			border: 1px solid #999;
+			width: 14%;
+			border-radius: 15px;
+			display: inline-block;
+			background-color:transparent;
+		}
+		.select_1{
+			border:none;
+			color: #999;
+			margin: 5px;
+			outline: none;
+			width: 20%;
+			border-right: 1px solid #999;
+			background-color: rgba(0,0,0,0);
+		}
+		.input_1{
+			border:none;
+			color: #999;
+			outline: none;
+			background-color: rgba(0,0,0,0);
+		}
+
+		.paddingright20{
+			padding-right: 10%;
+		}
+
+		.center{
+			margin: 0 auto;
+			text-align: center;
+		}
+		.gray{
+			margin: 10px;
+			color: gray;
+		}
+		.movecenter{
+			position: absolute;
+			top: 10%;
+		}
+		.blue{
+			outline: none;
+		}
+		.goodview a{
+			color: #999;
+			text-decoration: none;
+			padding-left: 10%;
+			padding-bottom: 5%;
+		}
+		.friend{
+			text-decoration: none;
+			font-size: 15px;
+		}
+		.movedown{
+			margin-top: 10px;
+		}
+		.br1{
+			border-right: 1px solid #eee;
+		}
+		.copy{
+			background-color: #353f4b;
+			color: white
+		}
+		.copy a {
+			text-decoration: none;
+		}
+		.pointer{
+			cursor: pointer;
+		}
+    	.tb:hover{
+			text-decoration: none;
+   		 }
+	</style>
+</head>
+<body>
+	 <div class="container"> 
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- 100%宽度的响应式布局 -->
+			<div class="container-fluid">
+				<!-- 商标 -->
+				<a href="/" class="navbar-brand italic" style="margin-left:200px;">Movie's Entral</a>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav " >
+						<li class="active padding20" ><a href="/">首页</a></li>
+						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
+						<li class="padding20"><a href="/tomovielirbary">影评</a></li>
+						<!--  style="margin-right: 500px;" -->
+						<li class="padding20"><a href="">资讯</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
+						{{if .user}}
+                            <li class="padding20"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
+                            <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
+						{{else}}
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="/account/toregister">注册</a></li>
+						{{end}}
+					</ul>
+
+					<!-- <div class="div_1 ">
+						<select class="select_1">
+							<option>全部</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<input type="text" name="" class="input_1">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>  -->
+				</div>
+			</div>
+		</nav>
+		</div>
+	
+			<!-- 登录弹出框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content col-sm-8 col-sm-offset-2 ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+					<h3 class="center ">为爱电影的人</h3>
+					<h5 class="center gray">For People Who love's Movie</small>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">用户名</label>  -->
+							<div class="col-sm-10">
+								<input type="text" name="" placeholder="请输入用户名" class="form-control username">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">密码</label>  -->
+							<div class="col-sm-10">
+								<input type="password" name="" placeholder="请输入密码" class="form-control password">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-10 ">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="">记住密码
+									</label>
+								</div>
+							</div>
+						</div>
+						 <div class="form-group">
+   							 <div class="col-sm-12">
+      							<button type="button" class="btn btn-primary btn-lg col-sm-10" id="login">登录</button>
+    						</div>
+  						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default col-sm-3" style="margin-right:30%; " type="button" data-dismiss="modal">忘记密码</button>
+					<button class="btn btn-primary col-sm-3" type="button" id="register">注册账号</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<!-- 图片轮播 -->
+	<div class="container" id="myCarousel" style="width: 1200px;margin-top: 100px;">
+		<div id="carousel-example-generic" class="carousel slide" data-interval="3000" >
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="item active">
+					<img src="../static/img/1.jpg" class="img">
+					<div class="carousel-caption">
+						<h3>U3D</h3>
+						<p>新123</p>
+					</div>
+				</div>
+				<div class="item ">
+					<img src="../static/img/2.jpg" class="img" >
+					<div class="carousel-caption">
+						<h3>bbb</h3>
+						<p>新121233</p>
+					</div>
+				</div>
+				<div class="item ">
+					<img src="../static/img/3.jpg" class="img" >
+					<div class="carousel-caption">
+						<h3>U12D</h3>
+						<p>新122333</p>
+					</div>
+				</div>
+			</div>
+			<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    			<span class="sr-only">Previous</span>
+  			</a>
+  			<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+   				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    			<span class="sr-only">Next</span>
+  			</a>
+		</div>
+	</div>
+
+	<!--热门电影 -->
+	<div class="container">
+		<h1 class="text-center">热门电影</h1>
+		
+		<ul class="nav nav-tabs" role="tablist" id="mytab">
+			<li role="presentation" class="active"><a href="">日韩电影</a></li>
+			<li role="presentation"><a href="">欧美电影</a></li>
+			<li role="presentation"><a href="">内地电影</a></li>
+			<li role="presentation"><a href="">港台电影</a></li>
+		</ul>
+		<br>
+		<div class="row" id="hotmovie">
+		{{range $index,$movie := .movies.Object}}
+        	<a class="col-sm-3 tb " >
+        		<div class="thumbnail pointer" value="{{$movie.Id}}">
+        			<img src="{{$movie.MovieImg}}">
+        			<div class="caption">
+        				<h3 class="center">{{$movie.MovieName}}</h3>
+        				<p class="center">导演:{{$movie.Director}}</p>
+        			</div>
+        		</div>
+        	</a>
+		{{end}}
+	    </div>
+        <div class="col-lg-3 col-lg-offset-5">
+	    	<button class="btn btn-default col-lg-8 blue" id="blue" click="adkljsf()">查看更多</button>
+	    </div>
+
+	 
+	</div>
+
+	<!-- 热门影评 -->
+	<div class="container">
+		   <h1 class="text-left">热门影评</h1>
+	    <hr>
+    	<div class="row">
+        	<div class="col-xs-4 col-lg-4">
+        		<div class="thumbnail">
+        			<img src="../static/img/4.jpg">
+	        		<div class="caption">
+    	    			<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
+    	    			<p class="lead text-center">title</p>
+        				<p class="" style="text-indent: 10%;">内容...</p>
+        			</div>
+	        	</div>
+        	</div>
+        	<div class="col-xs-4 col-lg-4">
+        		<div class="media">
+	    			<div class="media-body">
+						<h4 class="media-class">Media</h4>
+						<p>
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+						</p>
+						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
+					</div>
+					<a href="" class="media-right media-middle">
+    					<img src="../static/img/1.jpg" height="120px;" >
+					</a>
+    			</div>
+
+				<div class="media">
+	    			<div class="media-body">
+						<h4 class="media-class">Media</h4>
+						<p>
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+						</p>
+						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
+					</div>
+					<a href="" class="media-right media-middle">
+    					<img src="../static/img/1.jpg" height="120px;" >
+					</a>
+    			</div>	
+    			<div class="media">
+	    			<div class="media-body">
+						<h4 class="media-class">Media</h4>
+						<p>
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
+						</p>
+						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
+					</div>
+					<a href="" class="media-right media-middle">
+    					<img src="../static/img/1.jpg" height="120px;">
+					</a>
+    			</div>	
+			</div>
+			<div class="col-xs-4 col-lg-4">
+				<div class="list-group goodview ">
+					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >本周强推</a>
+					<a href="" class="list-group-item" style="padding-top: 16%;">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+
+				</div>
+			</div>
+	    </div>
+			<div class="col-lg-3 col-lg-offset-5">
+    	    	<button class="btn btn-default col-lg-8 " id="green">查看更多</button>
+    	    </div>
+	</div>
+		<!-- 最新资讯 -->
+		<div class="container">
+		  <h1 class="text-center">最潮资讯</h1>
+    	   	<div class="col-sm-8" style="border: 1px solid #eee;"></div>
+    	   	<br>
+    	       <div class="row">
+        			<div class="col-sm-8">
+        				<div class="row">
+        					<div class="col-sm-6">
+        						<div class="thumbnail">
+        							<img src="../static/img/4.jpg">
+    							<div class="caption">
+        							<h3>恋爱回旋</h3>
+        							<p>新垣结衣</p>
+		        				</div>
+        						</div>
+       						</div>
+						<div class="col-sm-6">
+        						<div class="thumbnail">
+        							<img src="../static/img/4.jpg">
+    							<div class="caption">
+        							<h3>恋爱回旋</h3>
+        							<p>新垣结衣</p>
+		        				</div>
+        						</div>
+   						</div>
+    				</div>
+    				<div class="row">
+        					<div class="col-sm-6">
+        						<div class="thumbnail">
+        							<img src="../static/img/4.jpg">
+    							<div class="caption">
+        							<h3>恋爱回旋</h3>
+        							<p>新垣结衣</p>
+		        				</div>
+        						</div>
+       						</div>
+						<div class="col-sm-6">
+        						<div class="thumbnail">
+        							<img src="../static/img/4.jpg">
+    							<div class="caption">
+        							<h3>恋爱回旋</h3>
+        							<p>新垣结衣</p>
+		        				</div>
+        						</div>
+					</div>
+    				</div>
+        			</div>
+        			<div class="col-sm-4">
+        					<div class="list-group goodview ">
+		
+					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >官网最新动态</a>
+					<a href="" class="list-group-item" style="padding-top: 16%;">123</a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<button class="list-group-item btn-info text-center"><p class="text-center">CheckMore</p></button>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<!-- 友情链接 -->
+		<div class="container">
+			<h1 >友情链接</h1>
+			
+			<div class="row friend">
+        		<div class="col-sm-4 movedown" style="border-bottom:  1px solid #eee;"></div>
+        		<div class="col-sm-1 br1">
+        			<a href="">豆瓣电影</a>
+        		</div>
+        		<div class="col-sm-1 br1">
+        			<a href="">80s</a>
+        		</div>
+        		<div class="col-sm-1 br1">
+        			<a href="">IMDB</a>
+        		</div>
+        		<div class="col-sm-1 ">
+        			<a href="">电影FM</a>
+        		</div>
+        		<div class="col-sm-4 movedown" style="border-bottom:  1px solid #eee;"></div>
+    		</div>
+		</div>
+	</div>
+	 <div style="width: 100%;margin-top: 2%;" >
+	    <div class="jumbotron copy" style="margin: 0">
+	    	<div class="container">
+  			<p class="text-center">本站所有信息均由互联网爬虫自动搜索得来，相关链接已注明来源，版权归原创者所有。</p>
+  			<p class="text-center">如果无意中侵犯了您的权益，请通知我（hjlmzx5@163.com)，我们会及时做相应处理，谢谢合作。</p>
+  			</div>
+			<p class="text-center"><a href=""><small>&copy;Movie's Entral.com Author:Hxy</small></a></p>
+		</div>
+	</div>
+</div>
+	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$("#mytab a").click(function(e){
+			e.preventDefault()
+			$(this).tab("show")
+		})
+
+		$(".carousel").carousel({
+			interval:3000
+		});
+		function aoksdjf(){
+			adkjsf;lkasd
+		}
+		$("#blue").hover(function(){
+			var s = $('#blue')
+			var b = s.is('.btn-default')
+			if (b){
+				$("#blue").removeClass("btn-default");
+				$("#blue").addClass("btn-info");
+			}
+			else{
+				$("#blue").removeClass("btn-info");
+				$("#blue").addClass("btn-default");
+			}
+		});
+
+		$("#green").hover(function(){
+			var s = $('#green')
+			var b = s.is('.btn-default')
+			if (b){
+				$("#green").removeClass("btn-default");
+				$("#green").addClass("btn-success");
+			}
+			else{
+				$("#green").removeClass("btn-success");
+				$("#green").addClass("btn-default");
+			}
+		});
+
+		// ======register页面js复用
+
+			$(".username").blur(function(){
+				var $name = $(this)
+				if($name.val() == ""){
+					$name.next().text("账户不能为空")
+					return
+				}else{
+					$name.next().text("")
+				}
+				if($name.val().length < 6 || $name.val().length > 11){
+					$name.next().text("请按要求的长度范围输入！")
+				}else{
+					$name.next().text("")
+				}
+
+			});
+
+			// 判断密码是否为空
+			$(".password").blur(function(){
+				var $pwd = $(this)
+				if($pwd.val() == ""){
+					$pwd.next().text("密码不能为空")
+					return
+				}else{
+					$pwd.next().text("")
+				}
+				if($pwd.val().length < 6 || $pwd.val().length > 11){
+					$pwd.next().text("请按要求的长度范围输入！")
+				}else{
+					$pwd.next().text("")
+				}
+			});
+
+			$("#login").click(function(){
+				$("#login").next().text('')
+				alert("秀秀秀秀")
+				var vals = $(this).parent().parent().parent().find("input")
+				var vales =  {}
+				for(var i = 0;i<2;i++){
+					vales[i] = $(vals[i]).val()
+					console.log(vales[i])
+					if(vales[i] == "" ){
+						alert("还有选项没填！")
+						return
+					}
+				}
+				if (vales[1].length <6 || vales[1].length >11 || vales[0].length <6 || vales[0].length >11){
+					alert("按要求输入谢谢！")
+					return
+				}
+				$.ajax({
+					url:'/account/login',
+					type:'get',
+					dataType:'json',
+					data:{
+						"Uid":vales[0],
+						"Password":vales[1]
+					},
+					success:function(result){
+						if (result.Status) {
+							alert(result.Msg)
+							for(var i = 0;i<vals.length;i++){
+								$(vals[i]).val("")
+							}
+							window.location.href = "/"
+							return
+						}
+						$("#login").next().text(result.Msg)
+					},
+					error:function(){
+						alert("服务器出现问题请稍后重试")
+					}
+				})
+			});
+		// ==================================
+
+		$("#register").click(function(){
+			window.location.href = "/account/toregister"
+		});
+
+		$("#loginout").click(function(){
+			var ok = confirm("确定要退出登录吗？")
+			if (ok) {
+				window.location.href = "/account/loginout"
+			}
+		});
+
+		// index 界面的js
+
+		$("#hotmovie .pointer").on("click",function(){
+			var movieId = $(this).attr("value")
+ 			window.location.href = "/movieintrdouce?movieId="+movieId
+		});
+	</script>
+</body>
+</html>

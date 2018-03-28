@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style type="text/css">
+		.italic {
+			font-style:oblique;
+		}
+		.padding20{
+			padding-left: 40px; 
+		}
+		.div_1{
+			margin-top:10px;
+			border: 1px solid #999;
+			width: 14%;
+			border-radius: 15px;
+			display: inline-block;
+			background-color:transparent;
+		}
+		.select_1{
+			border:none;
+			color: #999;
+			margin: 5px;
+			outline: none;
+			width: 20%;
+			border-right: 1px solid #999;
+			background-color: rgba(0,0,0,0);
+		}
+		.input_1{
+			border:none;
+			color: #999;
+			outline: none;
+			background-color: rgba(0,0,0,0);
+		}
+
+		.paddingright20{
+			padding-right: 10%;
+		}
+
+		.center{
+			margin: 0 auto;
+			text-align: center;
+		}
+		.gray{
+			margin: 10px;
+			color: gray;
+		}
+		.movecenter{
+			position: absolute;
+			top: 10%;
+		}
+		.blue{
+			outline: none;
+		}
+		.goodview a{
+			color: #999;
+			text-decoration: none;
+			padding-left: 10%;
+			padding-bottom: 5%;
+		}
+		.friend{
+			text-decoration: none;
+			font-size: 15px;
+		}
+		.movedown{
+			margin-top: 10px;
+		}
+		.br1{
+			border-right: 1px solid #eee;
+		}
+		.copy{
+			background-color: #353f4b;
+			color: white
+		}
+		.copy a {
+			text-decoration: none;
+		}
+
+
+
+
+		.bk{
+			background-color: rgba(12, 11, 11, 0.53);
+			border:1px solid black;
+			color: white;
+			box-shadow: 10px 10px 10px black;
+		}
+		.nob{
+			border: 0px;
+		}
+		#start span:hover{
+			cursor: pointer;
+		}
+	</style>
+	<style type="text/css">
+		.pointer{
+			cursor: pointer;
+		}
+		.tb:hover{
+			text-decoration: none;
+		}
+
+		.bl{
+			border-left: 4px solid #eee;
+			padding-left: 2%;
+		}
+		.m0{
+			margin: 0px;
+		}
+
+		.yellow{
+			color: yellow;
+		}
+
+		.star{}
+
+		.red{
+			color: red;
+		}
+		.pl0{
+			padding-left: 0px;
+		}
+		.br1{
+			border-right: 1px solid #eee;
+		}
+		.ptb{
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	 <div class="container"> 
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- 100%宽度的响应式布局 -->
+			<div class="container-fluid">
+				<!-- 商标 -->
+				<a href="/" class="navbar-brand italic" style="margin-left:200px;">Movie's Entral</a>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav " >
+						<li class="active padding20" ><a href="/">首页</a></li>
+						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
+						<li class="padding20"><a href="/tomovielirbary">影评</a></li>
+						<!--  style="margin-right: 500px;" -->
+						<li class="padding20"><a href="">资讯</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
+						{{if .user}}
+                            <li class="padding20"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
+                            <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
+						{{else}}
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="/account/toregister">注册</a></li>
+						{{end}}
+					</ul>
+
+					<!-- <div class="div_1 ">
+						<select class="select_1">
+							<option>全部</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<input type="text" name="" class="input_1">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>  -->
+				</div>
+			</div>
+		</nav>
+	</div>
+	
+	<br>
+	<br>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9 ">
+				<ol class="breadcrumb">
+  					<li><a href="/">首页</a></li>
+  					<li><a href="/tomovielirbary">电影库</a></li>
+  					<li class="active">电影介绍</li>
+				</ol>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-9">
+				<div class="col-sm-6">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="{{.movie.Object.MovieImg }}"  class="img-responsive img-rounded" alt="Responsive image" >
+						</a>
+						<p></p>
+						<p class="text-left">热度：&nbsp;{{.attribute.Object.Popularity}}</p>
+						<p class="text-left">收藏人数：&nbsp;{{.attribute.Object.CollectNum}}</p>
+						<p class="text-left">	剧情介绍：
+							{{.movie.Object.Plot}}
+						</p>
+						<p class="text-left">
+							写影评 <span class="glyphicon glyphicon-pencil pointer"></span>					
+						</p>	
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<h2 class="bl m0">{{.movie.Object.MovieName }}<small>({{.attribute.Object.Year }})</small></h2>
+					<br>
+					<table class="col-sm-12">
+						<tbody>
+							<tr>
+								<td class="col-sm-3 "><strong>地区</strong></td>
+								<td class="col-sm-9">{{.movie.Object.Area }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>导演</strong></td>
+								<td class="col-sm-9">{{.movie.Object.Director }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>语言</strong></td>
+								<td class="col-sm-9">{{.movie.Object.Language }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>类型</strong></td>
+								<td class="col-sm-9">{{.movie.Object.Type }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>上映日期</strong></td>
+								<td class="col-sm-9">{{.movie.Object.ReleaseDate }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>更新日期</strong></td>
+								<td class="col-sm-9">{{.movie.Object.UpdateDate }}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>电影评分</strong></td>
+								<td class="col-sm-9">{{.attribute.Object.Score}}</td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>电影简介</strong></td>
+								<td class="col-sm-9">{{.movie.Object.Introuduce	}}</td>
+							</tr>
+							<tr>
+								{{if eq .movie.Object.Source  "exist" }}
+									<td class="col-sm-3 "><strong>片源</strong></td>
+									<td class="col-sm-9">有&nbsp;&nbsp;<a class="btn btn-success" add="{{.movie.Object.SourcePath}}" href="/movieplayer?movieId={{.movie.Object.Id}}">观赏电影!</a></td>
+								{{else}}
+									<td class="col-sm-3 "><strong>片源</strong></td>
+									<td class="col-sm-9">无&nbsp;&nbsp;<button class="btn btn-info">上传资源？</button></td>
+								{{end}}
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>收藏</strong></td>
+								<!-- 通过给定color改变图标颜色 -->
+								<td class="col-sm-9" ><span class="glyphicon glyphicon-heart pointer" id="heart"></span></td>
+							</tr>
+							<tr>
+								<td class="col-sm-3 "><strong>你的评分</strong></td>
+								<!-- 通过给定color改变图标颜色 -->
+								<td class="col-sm-9" id="start">
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="glyphicon glyphicon-star star"></span>
+									<span class="badge yellow">0</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="list-group goodview ">
+					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >相关影评</a>
+					<a href="" class="list-group-item" style="padding-top: 20%;">
+						<p class="text-left">author:<small>123</small></p>
+					</a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<a href="" class="list-group-item">123 </a>
+					<button class="list-group-item btn-info text-center"><p class="text-center">CheckMore</p></button>
+				</div>
+				</div>
+			</div>
+		</div>
+		<!--短评 -->
+		<div class="container">
+
+			<div class="col-sm-9">
+				<h3 >短评</h3>
+				<hr>
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<div class="well ptb">
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+						我我我我我我我我我我
+					</div>
+				</div>
+				<hr>
+				<div class="col-sm-12">
+					<hr>
+					<nav aria-label="Page navigation ">
+   			 		 <ul class="pager">
+    					<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+    					<li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
+  					</ul>
+				</nav>
+				</div>
+			</div>
+			<div class="col-sm-9">
+						<h3>发表评论</h3>
+			<hr>
+				<div class="col-sm-3 br1">
+					<div class="media">
+						<a href="" class="media-left">
+							<img src="1.jpg" height="5%">
+						</a>
+						<div class="media-body">
+							<p> name</p>
+							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9 ">
+					<textarea id ="content" class="ptb form-control" maxlength="70" placeholder="对电影短评(70字以内)"></textarea>
+				</div>
+
+			</div>
+
+			<div class="col-sm-9" style="padding-top: 2%;">
+				<div class="col-sm-6 col-sm-offset-9">
+					<div class="btn-group" role="group" aria-label="...">
+  						<button type="button" class="btn btn-danger" id="clear">清空内容</button>
+  						<button type="button" class="btn btn-success">提交评论</button>
+				</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 我要发表评论 -->
+	<!-- 页尾 -->
+	<div style="width: 100%;margin-top: 2%;" >
+	    <div class="jumbotron copy" style="margin: 0">
+	    	<div class="container">
+  			<p class="text-center">本站所有信息均由互联网爬虫自动搜索得来，相关链接已注明来源，版权归原创者所有。</p>
+  			<p class="text-center">如果无意中侵犯了您的权益，请通知我（hjlmzx5@163.com)，我们会及时做相应处理，谢谢合作。</p>
+  			</div>
+			<p class="text-center"><a href=""><small>&copy;Movie's Entral.com Author:Hxy</small></a></p>
+		</div>
+	</div>
+
+	<!-- 弹框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content col-sm-8 col-sm-offset-2 ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+					<h3 class="center ">为爱电影的人</h3>
+					<h5 class="center gray">For People Who love's Movie</small>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">用户名</label>  -->
+							<div class="col-sm-10">
+								<input type="text" name="" placeholder="请输入用户名" class="form-control username">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">密码</label>  -->
+							<div class="col-sm-10">
+								<input type="password" name="" placeholder="请输入密码" class="form-control password">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-10 ">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="">记住密码
+									</label>
+								</div>
+							</div>
+						</div>
+						 <div class="form-group">
+   							 <div class="col-sm-12">
+      							<button type="button" class="btn btn-primary btn-lg col-sm-10" id="login">登录</button>
+    						</div>
+  						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default col-sm-3" style="margin-right:30%; " type="button" data-dismiss="modal">忘记密码</button>
+					<button class="btn btn-primary col-sm-3" type="button" id="register">注册账号</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		// 评分
+		$("#start .star").click(function(){
+			var ss = $("#start .badge")
+			var i
+			var span = $("#start span")
+			for (i = 0; i<span.length;i++) {
+				$(span[i]).removeClass('yellow')
+			}
+			for (i = 0; i<span.length;i++) {
+			if(this == span[i]){
+				break;
+			}
+			$(span[i]).addClass('yellow')
+			}
+			$(this).addClass('yellow')
+			ss.html(i+1)
+		})
+		// 收藏
+		$('#heart').click(function(argument) {
+			if ($(this).is('.red')){
+				$(this).removeClass('red')
+				return
+			}
+			$(this).addClass('red')
+		})
+
+		// 清空内容
+		$('#clear').click(function(){
+			console.log(1)
+			console.log($('#content'))
+			$('#content').val("")
+		});
+	</script>
+	<!-- index.html js 复用 -->
+	<script type="text/javascript">
+		$("#mytab a").click(function(e){
+			e.preventDefault()
+			$(this).tab("show")
+		})
+
+		$(".carousel").carousel({
+			interval:3000
+		});
+		function aoksdjf(){
+			adkjsf;lkasd
+		}
+		$("#blue").hover(function(){
+			var s = $('#blue')
+			var b = s.is('.btn-default')
+			if (b){
+				$("#blue").removeClass("btn-default");
+				$("#blue").addClass("btn-info");
+			}
+			else{
+				$("#blue").removeClass("btn-info");
+				$("#blue").addClass("btn-default");
+			}
+		});
+
+		$("#green").hover(function(){
+			var s = $('#green')
+			var b = s.is('.btn-default')
+			if (b){
+				$("#green").removeClass("btn-default");
+				$("#green").addClass("btn-success");
+			}
+			else{
+				$("#green").removeClass("btn-success");
+				$("#green").addClass("btn-default");
+			}
+		});
+
+		// ======register页面js复用
+
+			$(".username").blur(function(){
+				var $name = $(this)
+				if($name.val() == ""){
+					$name.next().text("账户不能为空")
+					return
+				}else{
+					$name.next().text("")
+				}
+				if($name.val().length < 6 || $name.val().length > 11){
+					$name.next().text("请按要求的长度范围输入！")
+				}else{
+					$name.next().text("")
+				}
+
+			});
+
+			// 判断密码是否为空
+			$(".password").blur(function(){
+				var $pwd = $(this)
+				if($pwd.val() == ""){
+					$pwd.next().text("密码不能为空")
+					return
+				}else{
+					$pwd.next().text("")
+				}
+				if($pwd.val().length < 6 || $pwd.val().length > 11){
+					$pwd.next().text("请按要求的长度范围输入！")
+				}else{
+					$pwd.next().text("")
+				}
+			});
+
+			$("#login").click(function(){
+				$("#login").next().text('')
+				alert("秀秀秀秀")
+				var vals = $(this).parent().parent().parent().find("input")
+				var vales =  {}
+				for(var i = 0;i<2;i++){
+					vales[i] = $(vals[i]).val()
+					console.log(vales[i])
+					if(vales[i] == "" ){
+						alert("还有选项没填！")
+						return
+					}
+				}
+				if (vales[1].length <6 || vales[1].length >11 || vales[0].length <6 || vales[0].length >11){
+					alert("按要求输入谢谢！")
+					return
+				}
+				$.ajax({
+					url:'/account/login',
+					type:'get',
+					dataType:'json',
+					data:{
+						"Uid":vales[0],
+						"Password":vales[1]
+					},
+					success:function(result){
+						if (result.Status) {
+							alert(result.Msg)
+							for(var i = 0;i<vals.length;i++){
+								$(vals[i]).val("")
+							}
+							location.reload()
+							return
+						}
+						$("#login").next().text(result.Msg)
+					},
+					error:function(){
+						alert("服务器出现问题请稍后重试")
+					}
+				})
+			});
+		// ==================================
+
+		$("#register").click(function(){
+			window.location.href = "/account/toregister"
+		});
+
+		$("#loginout").click(function(){
+			var ok = confirm("确定要退出登录吗？")
+			if (ok) {
+				window.location.href = "/account/loginout"
+			}
+		});
+	</script>
+</body>
+</html>

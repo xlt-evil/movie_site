@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style type="text/css">
+		<style type="text/css">
+		.italic {
+			font-style:oblique;
+		}
+		.padding20{
+			padding-left: 40px; 
+		}
+		.div_1{
+			margin-top:10px;
+			border: 1px solid #999;
+			width: 14%;
+			border-radius: 15px;
+			display: inline-block;
+			background-color:transparent;
+		}
+		.select_1{
+			border:none;
+			color: #999;
+			margin: 5px;
+			outline: none;
+			width: 20%;
+			border-right: 1px solid #999;
+			background-color: rgba(0,0,0,0);
+		}
+		.input_1{
+			border:none;
+			color: #999;
+			outline: none;
+			background-color: rgba(0,0,0,0);
+		}
+
+		.paddingright20{
+			padding-right: 10%;
+		}
+
+		.center{
+			margin: 0 auto;
+			text-align: center;
+		}
+		.gray{
+			margin: 10px;
+			color: gray;
+		}
+		.movecenter{
+			position: absolute;
+			top: 10%;
+		}
+		.blue{
+			outline: none;
+		}
+		.goodview a{
+			color: #999;
+			text-decoration: none;
+			padding-left: 10%;
+			padding-bottom: 5%;
+		}
+		.friend{
+			text-decoration: none;
+			font-size: 15px;
+		}
+		.movedown{
+			margin-top: 10px;
+		}
+		.br1{
+			border-right: 1px solid #eee;
+		}
+		.copy{
+			background-color: #353f4b;
+			color: white
+		}
+		.copy a {
+			text-decoration: none;
+		}
+
+
+
+
+		.bk{
+			background-color: rgba(12, 11, 11, 0.53);
+			border:1px solid black;
+			color: white;
+			box-shadow: 10px 10px 10px black;
+		}
+		.nob{
+			border: 0px;
+		}
+		#start span:hover{
+			cursor: pointer;
+		}
+	</style>
+	</style>
+	<style type="text/css">
+		.pointer{
+			cursor: pointer;
+		}
+		.tb:hover{
+			text-decoration: none;
+		}
+		.m0{
+			margin-top: 0px;
+		}
+		.red{
+			color: red
+		}
+		.yellow{
+			color:yellow
+		}
+		.pointer{
+			cursor: pointer;
+		}
+	</style>
+	<style type="text/css">
+		.person{
+			background-image: url(../static/img/20.webp);
+		}
+		.pl0{
+			padding-left: 0px;
+		}
+		.actives{
+			border-bottom: 2px solid #00a1d6;
+		}
+		.pr0{
+			padding-right: 0px;
+		}
+		.plr{
+			padding-top: 10px;
+			padding-bottom: 10px;
+			color: #6d757a;
+		}
+	</style>
+</head>
+<body style=" background-color: #f4f5f7">
+	 <div class="container"> 
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- 100%宽度的响应式布局 -->
+			<div class="container-fluid">
+				<!-- 商标 -->
+				<a href="/" class="navbar-brand italic" style="margin-left:200px;">Movie's Entral</a>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav " id="mytab">
+						<li class="padding20" ><a href="/">首页</a></li>
+						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
+						<li class="padding20"><a href="">影评</a></li>
+						<!--  style="margin-right: 500px;" -->
+						<li class="padding20"><a href="">资讯</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
+						{{if .user}}
+                            <li class="padding20 active"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
+                            <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
+						{{else}}
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="/account/toregister">注册</a></li>
+						{{end}}
+					</ul>
+
+					<!-- <div class="div_1 ">
+						<select class="select_1">
+							<option>全部</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<input type="text" name="" class="input_1">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>  -->
+				</div>
+			</div>
+		</nav>
+		</div>
+	<br>
+	<br>
+	<br>
+	<div class="container person">
+		<div class="col-sm-9">
+			<div class="col-sm-12 pl0" style="padding-top: 15%;">
+				<div class="col-sm-2 pl0">
+					<img  src = "{{.user.ImgHead}}" style="border-radius: 50%;height: 70px;" class="img-responsive " >
+				</div>
+				<div class="col-sm-7 pl0">
+					<blockquote style="border-left: 0px;margin: 0px;" class="pl0">
+						<p style="color: white;"><strong>{{.user.Name}}</strong></p>
+						<footer style="color: #d6dee4">{{.user.PersonSign}} </footer>
+					</blockquote>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3" >
+			<img src="../static/img/10.jpg" class="img-responsive img-circle">
+		</div>
+	</div>
+	<div class="container pl0" style="padding-right: 0px;">
+		<nav class="navbar navbar-default  pl0" role="navigation" style="background-color: #ffffff;">
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav " id="mytab">
+					<li class="actives"><a href=""><span class="glyphicon glyphicon-home" style="color: #00c091"></span> &nbsp;主页</a></li>
+					<li class=""><a href=""><span class="glyphicon glyphicon-user" style="color: #fb7299"></span> &nbsp;个人信息</a></li>
+					<li class=""><a href=""><span class="glyphicon glyphicon-eye-open" style="color: #23c9ed"></span> &nbsp;历史记录</a></li>
+					<li class=""><a href=""><span class="glyphicon glyphicon-envelope" style="color: #f3a034"></span> &nbsp;消息</a></li>
+					<li ><a href=""><span class="glyphicon glyphicon-tree-deciduous" style="color: #ff5d47"></span> &nbsp;意见树</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div class="container pl0 pr0" >
+		<div class="col-sm-8" style="background-color: white;: #f4f5f7">
+			<h2 class="col-sm-12" style="margin-bottom: 2%">电影收藏</h2>
+			<div class="col-sm-12">
+				<div class="col-sm-4">
+					<div class="thumbnail">
+	        			<div class="caption">
+	        				<p class="text-center">name</p>
+	        			</div>
+	        			<a href=""><img src="../static/img/4.jpg" class="img-responsive"></a>
+	        		</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="thumbnail">
+	        			<div class="caption">
+	        				<p class="text-center">name</p>
+	        			</div>
+	        			<a href=""><img src="../static/img/4.jpg" class="img-responsive"></a>
+	        		</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="thumbnail">
+	        			<div class="caption">
+	        				<p class="text-center">name</p>
+	        			</div>
+	        			<a href=""><img src="../static/img/4.jpg" class="img-responsive"></a>
+	        		</div>
+				</div>
+				<button class="btn btn-info col-sm-offset-5">查看更多</button>
+				<hr class="col-sm-11">
+			</div>
+
+
+			<h2 class="col-sm-12"  style="margin-bottom: 2%">我的影评</h2>
+			<div class="col-sm-12 ">
+				<a href="" class="col-sm-12">
+					<p class="col-sm-3">name</p>
+					<p class="col-sm-6"> content</p>
+					<p class="col-sm-3">time</p>
+				</a>	
+				<a href="" class="col-sm-12">
+					<p class="col-sm-3">name</p>
+					<p class="col-sm-6"> content</p>
+					<p class="col-sm-3">time</p>
+				</a>
+				<a href="" class="col-sm-12">
+					<p class="col-sm-3">name</p>
+					<p class="col-sm-6"> content</p>
+					<p class="col-sm-3">time</p>
+				</a>
+				<button class="btn btn-info col-sm-offset-5">查看更多</button>			
+				<hr class="col-sm-11">	
+			</div>
+
+			<h2 class="col-sm-12"  style="margin-bottom: 2%">我上传的电影<small>(暂定)</small></h2>
+			<div class="col-sm-12">
+				<hr class="col-sm-11">	
+			</div>
+		</div>
+		<!-- col-sm-4 pl0 pr0 pull-right -->
+		<div class="pull-right" style="width: 32%;">
+			<div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
+				<p class="lead" style="margin-top: 20px;">浏览次数：10</p>
+			</div>
+			<div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
+				<h5><strong>公告</strong></h5>
+				<textarea class="form-control" maxlength="150" style="height: 100px;margin-bottom: 3%;border:none;" placeholder="编辑空间公告"></textarea>
+			</div>
+			<div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
+				<ul class="list-unstyled col-sm-12 plr" style="margin-bottom: 0px;">
+					<li class="col-sm-5 "><span class="badge" style="background-color: #7cd4f2">UID</span>&nbsp;14182261</li>
+					<li class="col-sm-7 " ><span class="glyphicon glyphicon-time" style="color: #9bd99f">&nbsp;</span>注册于 2018-5-15</li>
+					<br>
+					<hr>
+					<li class="col-sm-5 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-bell" style="color: #f9c86d"></span>&nbsp;02-12</li>
+					<li class="col-sm-7 "><span class="glyphicon glyphicon-grain" style="color: #fdaeb1">&nbsp;</span>未填写</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	 <div style="width: 100%;margin-top: 2%;" >
+	    <div class="jumbotron copy" style="margin: 0">
+	    	<div class="container">
+  			<p class="text-center">本站所有信息均由互联网爬虫自动搜索得来，相关链接已注明来源，版权归原创者所有。</p>
+  			<p class="text-center">如果无意中侵犯了您的权益，请通知我（hjlmzx5@163.com)，我们会及时做相应处理，谢谢合作。</p>
+  			</div>
+			<p class="text-center"><a href=""><small>&copy;Movie's Entral.com Author:Hxy</small></a></p>
+		</div>
+	</div>
+	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$("#loginout").click(function(){
+			var ok = confirm("确定要退出登录吗？")
+			if (ok) {
+				window.location.href = "/account/loginout"
+			}
+		});
+	</script>
+</body>
+</html>

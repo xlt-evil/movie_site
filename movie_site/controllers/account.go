@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"movie_site/models"
-	"movie_site/services"
+	"SB/movie_site/models"
+	"SB/movie_site/services"
 	"fmt"
 )
 

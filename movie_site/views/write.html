@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>影评发布</title>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="	sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style type="text/css">
+		.italic {
+			font-style:oblique;
+		}
+		.padding20{
+			padding-left: 40px; 
+		}
+		.div_1{
+			margin-top:10px;
+			border: 1px solid #999;
+			width: 14%;
+			border-radius: 15px;
+			display: inline-block;
+			background-color:transparent;
+		}
+		.select_1{
+			border:none;
+			color: #999;
+			margin: 5px;
+			outline: none;
+			width: 20%;
+			border-right: 1px solid #999;
+			background-color: rgba(0,0,0,0);
+		}
+		.input_1{
+			border:none;
+			color: #999;
+			outline: none;
+			background-color: rgba(0,0,0,0);
+		}
+
+		.paddingright20{
+			padding-right: 10%;
+		}
+
+		.center{
+			margin: 0 auto;
+			text-align: center;
+		}
+		.gray{
+			margin: 10px;
+			color: gray;
+		}
+		.movecenter{
+			position: absolute;
+			top: 10%;
+		}
+		.blue{
+			outline: none;
+		}
+		.goodview a{
+			color: #999;
+			text-decoration: none;
+			padding-left: 10%;
+			padding-bottom: 5%;
+		}
+		.friend{
+			text-decoration: none;
+			font-size: 15px;
+		}
+		.movedown{
+			margin-top: 10px;
+		}
+		.br1{
+			border-right: 1px solid #eee;
+		}
+		.copy{
+			background-color: #353f4b;
+			color: white
+		}
+		.copy a {
+			text-decoration: none;
+		}
+
+
+
+
+		.bk{
+			background-color: rgba(12, 11, 11, 0.53);
+			border:1px solid black;
+			color: white;
+			box-shadow: 10px 10px 10px black;
+		}
+		.nob{
+			border: 0px;
+		}
+	</style>
+	</style>
+</head>
+<body>
+		 <div class="container"> 
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- 100%宽度的响应式布局 -->
+			<div class="container-fluid">
+				<!-- 商标 -->
+				<a href="/" class="navbar-brand italic" style="margin-left:200px;">Movie's Entral</a>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav " >
+						<li class="active padding20" ><a href="/">首页</a></li>
+						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
+						<li class="padding20"><a href="/filmreview">影评</a></li>
+						<!--  style="margin-right: 500px;" -->
+						<li class="padding20"><a href="">资讯</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
+						{{if .user}}
+                            <li class="padding20"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
+                            <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
+						{{else}}
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="/account/toregister">注册</a></li>
+						{{end}}
+					</ul>
+
+					<!-- <div class="div_1 ">
+						<select class="select_1">
+							<option>全部</option>
+							<option>2</option>
+							<option>3</option>
+						</select>
+						<input type="text" name="" class="input_1">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>  -->
+				</div>
+			</div>
+		</nav>
+		</div>
+	<br>
+	<br>
+	<br>
+	<div class="container">
+		<div class="row col-sm-9">
+			<h1 id="name" value="{{.id}}">评论 {{.name}}</h1>
+			<hr>
+		</div>
+			<div class="row col-sm-9">
+			<p class="lead">题目</p>
+		</div>
+		<div class="row col-sm-12">
+			<input type="text" name="" class="form-control input-lg" id="title" style="width: 100%">
+		</div>
+		<div class="row col-sm-12">
+		<div class="hero-unit" style="margin-top:5%;">
+			<h1 >正文 <small>To think about everything in your thoughts</small></h1>
+			<hr/>
+			<div id="editor"></div>
+		</div>
+		</div>
+		<br>
+		<div class="btn-group col-sm-9 col-sm-offset-8" style="margin-top: 10px;">
+			<button class="btn btn-success  go">查看效果</button>
+			<button class="btn btn-info clear">清空内容</button>
+			<button class="btn btn-danger" id="release">提交影评</button>
+			<!-- 上传图片<input type="file" name="" id="pic"> -->
+		</div>
+		<br>
+		<div id="show" class="col-sm-12">
+			
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div style="width: 100%;margin-top: 2%;" >
+	    <div class="jumbotron copy" style="margin: 0">
+	    	<div class="container">
+  			<p class="text-center">本站所有信息均由互联网爬虫自动搜索得来，相关链接已注明来源，版权归原创者所有。</p>
+  			<p class="text-center">如果无意中侵犯了您的权益，请通知我（hjlmzx5@163.com)，我们会及时做相应处理，谢谢合作。</p>
+  			</div>
+			<p class="text-center"><a href=""><small>&copy;Movie's Entral.com Author:Hxy</small></a></p>
+		</div>
+	</div>
+	<div></div>
+
+<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+	$(".go").click(function(){
+		var content = editor.txt.html()
+		var title = $("#title").val()
+		title = "<h1 class='text-center'><strong>"+title+"</h1></strong>"
+		$("#show").html(title+content)
+	})
+
+	$(".clear").click(function(){	
+		editor.txt.html("")
+		$("#title").val("")
+		$(".go").click();
+	});
+
+	$("#loginout").click(function(){
+		var ok = confirm("确定要退出登录吗？")
+		if (ok) {
+			window.location.href = "/account/loginout"
+		}
+	});
+
+	$("#release").click(function(){
+		var content = editor.txt.html()
+		if (content == ""){
+			return
+		}
+		var title =  $("#title").val()
+		if (title == ""){
+			return
+		}
+		title = title
+		var movieId = parseInt($("#name").attr("value"))
+		$.ajax({
+			url: '../user/releasefilmcritic',
+			type: 'post',
+			dataType: 'json',
+			data: {"content":content,"title":title,"movieId":movieId},
+			success:function(result){
+				if(result.Status){
+					console.log("发布成功")
+					window.location.href = "/filmreview"
+					return
+				}
+				alert(result.Msg)
+			}
+		})
+	});
+</script>
+<script type="text/javascript" src="../static/release/wangEditor.min.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.customConfig.menus = [  
+        'head',
+        'bold',
+        'italic',
+        'underline',
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'image',
+        ]
+        editor.create()
+</script>
+</body>
+</html>

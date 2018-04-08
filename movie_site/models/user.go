@@ -1,9 +1,9 @@
 package models
 
 import (
-	"zcm_tools/orm"
 	"fmt"
 	"strconv"
+	"zcm_tools/orm"
 )
 
 //用户表
@@ -23,36 +23,80 @@ type User struct {
 	Integral     int    `description:"积分"`
 }
 
+type PersonFilm struct { //个人对电影表
+	Id      int
+	MovieId int
+	UserId  string
+	Score   int
+	Collect string `description:"false ture 收藏电影"`
+	//============================================
+	ImgHead string `description:"user表的头像"`
+}
+
 //添加账户
-func AddUser(u User)error{
+func AddUser(u User) error {
 	sql := `INSERT INTO user (uid,password,question,answer) VALUES(?,?,?,?)`
 	o := orm.NewOrm()
-	_,err := o.Raw(sql,u.Uid,u.Password,u.Question,u.Answer).Exec()
+	_, err := o.Raw(sql, u.Uid, u.Password, u.Question, u.Answer).Exec()
 	return err
 }
 
 //查用户id是否存在
-func CheckUid(uid string)(name string){
+func CheckUid(uid string) (name string) {
 	sql := `SELECT uid FROM user WHERE uid = ?`
 	o := orm.NewOrm()
-	o.Raw(sql,uid).QueryRow(&name)
+	o.Raw(sql, uid).QueryRow(&name)
 	return
 }
 
 //判断用户账户密码
 
-func CheckPwdAndUid(u User)(user *User){
+func CheckPwdAndUid(u User) (user *User) {
 	sql := `SELECT * FROM user WHERE uid = ? AND password = ? `
 	o := orm.NewOrm()
-	o.Raw(sql,u.Uid,u.Password).QueryRow(&user)
+	o.Raw(sql, u.Uid, u.Password).QueryRow(&user)
 	fmt.Print(user)
 	return
 }
 
-func ForgetPwd(u User)(password string){
+func ForgetPwd(u User) (password string) {
 	sql := `SELECT password FROM user WHERE uid = ? AND question = ? AND answer = ?`
 	o := orm.NewOrm()
-	question ,_:= strconv.Atoi(u.Question)
-	o.Raw(sql,u.Uid,question,u.Answer).QueryRow(&password)
+	question, _ := strconv.Atoi(u.Question)
+	o.Raw(sql, u.Uid, question, u.Answer).QueryRow(&password)
+	return
+}
+
+
+func FindPersonFilm(uid string,movieId int) (p *PersonFilm) {
+	sql := `SELECT * FROM per_to_film
+			WHERE user_id = ? AND movie_id = ? `
+	o := orm.NewOrm()
+	o.Raw(sql,uid,movieId).QueryRow(&p)
+	return
+}
+
+//添加到个人对电影表
+func InsertPersonFilm(p *PersonFilm)(err error) {
+	sql := `INSERT INTO per_to_film (movie_id,user_id) VALUES (?,?)`
+	o := orm.NewOrm()
+	_,err = o.Raw(sql,p.MovieId,p.UserId).Exec()
+	fmt.Println(sql,p)
+	return
+}
+
+//改变收藏状态
+func UpdatePersonCollect(p *PersonFilm)(err error){
+	sql := `UPDATE per_to_film SET collect = ? WHERE user_id = ? AND movie_id = ? `
+	o := orm.NewOrm()
+	_,err =  o.Raw(sql,p.Collect,p.UserId,p.MovieId).Exec()
+	return
+}
+
+//改变评分
+func UpdatePersonScore(p *PersonFilm)(err error){
+	sql := `UPDATE per_to_film SET score = ? WHERE user_id = ? AND movie_id = ? `
+	o := orm.NewOrm()
+	_,err =  o.Raw(sql,p.Score,p.UserId,p.MovieId).Exec()
 	return
 }

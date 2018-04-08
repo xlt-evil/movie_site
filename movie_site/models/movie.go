@@ -1,7 +1,7 @@
 package models
 
 import (
-	"movie_site/util"
+	"SB/movie_site/util"
 	"zcm_tools/orm"
 	"fmt"
 )
@@ -23,6 +23,7 @@ type Movie struct {
 	SourceFrom  int    `description:"资源来源"`
 	Integral    int    `description:"积分"`
 	MovieImg    string `description:"电影海报"`
+	Score       float64    `description:"电影评分"`
 }
 
 type MoiveAttribute struct {
@@ -32,6 +33,18 @@ type MoiveAttribute struct {
 	CollectNum int     `description:"收藏人数"`
 	Score      float64 `description:"评分"`
 	Year       string  `description:"年份"`
+}
+
+//地区
+type Area struct {
+	Id int
+	Name string
+}
+
+//类型
+type Type struct {
+	Id int
+	Name string
 }
 
 func FindMovieById(id int) (m Movie, err error) {
@@ -72,6 +85,128 @@ func FindMovieListByIndex(key []string)(movies []Movie,err error){
 			LIMIT 0,8`
 	o := orm.NewOrm()
 	_, err = o.Raw(sql,key[0],key[1]).QueryRows(&movies)
-	fmt.Print(sql,key[0],key[1],err,movies)
+	return
+}
+//热门电影异步加载
+func FindMovieListByIndexByAjax(condition string,paras ...interface{})(movies []Movie,err error){
+	sql := `SELECT
+				m.*
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						movie
+					 `
+			if condition != ""{
+				sql += condition
+			}
+			sql+=` ) m
+			LEFT JOIN movie_attribute ma ON ma.movie_id = m.id
+			ORDER BY
+				ma.popularity DESC,
+				ma.id ASC
+			LIMIT 0,8`
+	o := orm.NewOrm()
+	_, err = o.Raw(sql,paras).QueryRows(&movies)
+	fmt.Println(sql,paras,movies)
+	return
+}
+//电影库异步加载
+func MovieLibrary(condition,orderby string , pageIndex,pageSize int,paras ...interface{})(m []Movie,err error){
+	sql :=  `SELECT m.*,ma.score FROM (
+					SELECT * FROM movie
+					WHERE 1=1 `
+	if condition != ""{
+		sql += condition
+	}
+	sql+=` ) m LEFT JOIN movie_attribute ma ON ma.movie_id = m.id `
+	sql+= orderby
+	sql+=" LIMIT ?,?"
+	o := orm.NewOrm()
+	_,err = o.Raw(sql,paras,pageIndex,pageSize).QueryRows(&m)
+	fmt.Println(sql,paras,pageIndex,pageSize)
+	return
+}
+//得到地区名
+func GetAreaName(id int)(a Area,err error){
+	sql := `SELECT * FROM area WHERE id = ?`
+	o := orm.NewOrm()
+	err = o.Raw(sql,id).QueryRow(&a)
+	fmt.Println(sql,id,a)
+	return
+}
+//得到类型名
+func GetTypeName(id int)(a Type,err error){
+	sql := `SELECT * FROM type WHERE id = ?`
+	o := orm.NewOrm()
+	err = o.Raw(sql,id).QueryRow(&a)
+	return
+}
+//电影库首次加载页面
+func MovieLibraryPage()(m []Movie,err error){
+	sql := `SELECT m.*,ma.score FROM
+				(SELECT * FROM movie ) m
+				LEFT JOIN movie_attribute ma on ma.movie_id = m.id
+				ORDER BY ma.popularity DESC,
+                ma.id ASC
+				LIMIT 0 ,12`
+	o := orm.NewOrm()
+	_,err = o.Raw(sql).QueryRows(&m)
+	return
+}
+//按条件电影总数
+func CountMovieLibrary(condition string ,paras ...interface{})(count int,err error){
+	sql :=  `SELECT COUNT(1) FROM (
+					SELECT * FROM movie
+					WHERE 1=1 `
+	if condition != ""{
+		sql += condition
+	}
+	sql+=` ) m LEFT JOIN movie_attribute ma ON ma.movie_id = m.id `
+	o := orm.NewOrm()
+	err = o.Raw(sql,paras).QueryRow(&count)
+	return
+}
+//更新电影熟悉分数表的状态
+func UpdateMovieScore(score ,movieId int)(err error){
+	sql := `UPDATE movie_attribute SET score = ? WHERE movie_id = ? `
+	o := orm.NewOrm()
+	_,err = o.Raw(sql,score,movieId).Exec()
+	return
+}
+//获取摸个电影的平均值
+func GetAVGScore(movieId int)(socre int,err error) {
+	sql := `SELECT ROUND(AVG(score)) socre from per_to_film WHERE movie_id = ? `
+	o := orm.NewOrm()
+	err = o.Raw(sql, movieId).QueryRow(&socre)
+	return
+}
+//获取某个电影的收藏人数
+func GetAvgCollect(movieId int)(collect int ,err error){
+	sql := `SELECT count(1) collect from per_to_film WHERE movie_id = ? AND collect <> 2`
+	o := orm.NewOrm()
+	err = o.Raw(sql, movieId).QueryRow(&collect)
+	return
+}
+//更新某个电影的收藏人数
+func UpdateMoiveCollect(collect ,movieId int)(err error){
+	sql := `UPDATE movie_attribute SET collect_num = ? WHERE movie_id = ? `
+	o := orm.NewOrm()
+	_,err = o.Raw(sql,collect,movieId).Exec()
+	return
+}
+//查看电影名
+func FindMovieName(movieId int)(name string,err error){
+	sql := `SELECT movie_name name FROM movie WHERE id = ? `
+	o := orm.NewOrm()
+	err = o.Raw(sql,movieId).QueryRow(&name)
+	return
+}
+//查看电影id
+func FindMovieId(movieId int)(id int,err error){
+	sql := `SELECT id FROM movie WHERE id = ? `
+	o := orm.NewOrm()
+	err = o.Raw(sql,movieId).QueryRow(&id)
 	return
 }

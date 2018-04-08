@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "movie_site/routers"
+	_ "SB/movie_site/routers"
 	"github.com/astaxie/beego"
 )
 

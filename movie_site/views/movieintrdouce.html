@@ -111,13 +111,13 @@
 		}
 
 		.yellow{
-			color: yellow;
+			color: #e0e09d;
 		}
 
 		.star{}
 
 		.red{
-			color: red;
+			color: #ff7f7f;
 		}
 		.pl0{
 			padding-left: 0px;
@@ -131,7 +131,8 @@
 		}
 	</style>
 </head>
-<body>
+<!-- style="background-color: #f4f5f7" -->
+<body >
 	 <div class="container"> 
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<!-- 100%宽度的响应式布局 -->
@@ -142,7 +143,7 @@
 					<ul class="nav navbar-nav " >
 						<li class="active padding20" ><a href="/">首页</a></li>
 						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
-						<li class="padding20"><a href="/tomovielirbary">影评</a></li>
+						<li class="padding20"><a href="/filmreview">影评</a></li>
 						<!--  style="margin-right: 500px;" -->
 						<li class="padding20"><a href="">资讯</a></li>
 					</ul>
@@ -151,7 +152,7 @@
                             <li class="padding20"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
                             <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
 						{{else}}
-                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal" id="logings">登录</a></li>
                             <li class="padding20"><a href="/account/toregister">注册</a></li>
 						{{end}}
 					</ul>
@@ -192,12 +193,12 @@
 						</a>
 						<p></p>
 						<p class="text-left">热度：&nbsp;{{.attribute.Object.Popularity}}</p>
-						<p class="text-left">收藏人数：&nbsp;{{.attribute.Object.CollectNum}}</p>
+						<p class="text-left">收藏人数：&nbsp;<span id="collect">{{.attribute.Object.CollectNum}}</span></p>
 						<p class="text-left">	剧情介绍：
 							{{.movie.Object.Plot}}
 						</p>
 						<p class="text-left">
-							写影评 <span class="glyphicon glyphicon-pencil pointer"></span>					
+							写影评 <span class="glyphicon glyphicon-pencil pointer " id="filewrite"></span>					
 						</p>	
 					</div>
 				</div>
@@ -250,12 +251,16 @@
 							<tr>
 								<td class="col-sm-3 "><strong>收藏</strong></td>
 								<!-- 通过给定color改变图标颜色 -->
-								<td class="col-sm-9" ><span class="glyphicon glyphicon-heart pointer" id="heart"></span></td>
+								{{if eq .person.Collect "true"}}
+								<td class="col-sm-9" ><span class="glyphicon glyphicon-heart pointer red" id="heart" value="{{.movie.Object.Id}}"></span></td>
+								{{else}}
+								<td class="col-sm-9" ><span class="glyphicon glyphicon-heart pointer " id="heart" value="{{.movie.Object.Id}}"></span></td>
+								{{end}}
 							</tr>
 							<tr>
 								<td class="col-sm-3 "><strong>你的评分</strong></td>
 								<!-- 通过给定color改变图标颜色 -->
-								<td class="col-sm-9" id="start">
+								<td class="col-sm-9" id="start" value="{{.movie.Object.Id}}">
 									<span class="glyphicon glyphicon-star star"></span>
 									<span class="glyphicon glyphicon-star star"></span>
 									<span class="glyphicon glyphicon-star star"></span>
@@ -290,214 +295,64 @@
 			</div>
 		</div>
 		<!--短评 -->
-		<div class="container">
-
+		<div class="container" id="talk">
 			<div class="col-sm-9">
 				<h3 >短评</h3>
+			</div >
+			<div class="content">
+			{{if .talk.Status}}
+				{{range $index,$talk := .talk.Object}}
+					<div class="col-sm-9 pt">
+						<hr>
+						<div class="col-sm-3 br1">
+							<div class="media">
+								<a href="" class="media-left">
+									<img src="{{$talk.ImgHead}}" height="50px">
+								</a>
+								<div class="media-body">
+									<p>{{$talk.Name}}</p>
+									<p style="background-color: #679c21;color: white;" class="col-sm-1">{{$talk.Score}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-9 ">
+							<div class="well ptb">
+								{{$talk.Content}}
+							</div>
+						</div>
+					</div>
+				{{end}}
+			{{else}}
+				<div class="col-sm-9">
+					<div class="alert alert-success" role="alert">
+	 					<p class="text-center">
+  							(￣▽￣)~*:暂无短评哦！快来占沙发呀
+						</p>
+					</div>
+				</div>
+			{{end}}
+			</div>
+
+			<div class="col-sm-9" >
 				<hr>
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-				<hr>
-				<div class="col-sm-12">
-					<hr>
-					<nav aria-label="Page navigation ">
-   			 		 <ul class="pager">
-    					<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-    					<li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
-  					</ul>
+				<nav aria-label="Page navigation ">
+		 			<ul class="pager" value="{{.movie.Object.Id}}">
+		 				{{if .talk.Pref}}
+						<li class="previous" id="prev"><a href="#" value="0"><span aria-hidden="true">&larr;</span> Older</a></li>
+						{{else }}
+						<li class="previous disabled" id="prev"><a href="#" value="0"><span aria-hidden="true">&larr;</span> Older</a></li>
+						{{end}}
+						<span style="color: #39af84" id="page">1</span>
+						{{if .talk.Next}}
+						<li class="next" id="next"><a href="#" value="1">Newer <span aria-hidden="true">&rarr;</span></a></li>
+						{{else}}
+						<li class="next disabled" id="next"><a href="#" value="1">Newer <span aria-hidden="true">&rarr;</span></a></li>
+						{{end}}
+					</ul>
 				</nav>
-				</div>
 			</div>
 			<div class="col-sm-9">
-						<h3>发表评论</h3>
+				<h3>发表评论</h3>
 			<hr>
 				<div class="col-sm-3 br1">
 					<div class="media">
@@ -520,7 +375,7 @@
 				<div class="col-sm-6 col-sm-offset-9">
 					<div class="btn-group" role="group" aria-label="...">
   						<button type="button" class="btn btn-danger" id="clear">清空内容</button>
-  						<button type="button" class="btn btn-success">提交评论</button>
+  						<button type="button" class="btn btn-success" id="submit">提交评论</button>
 				</div>
 				</div>
 			</div>
@@ -590,32 +445,6 @@
 	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		// 评分
-		$("#start .star").click(function(){
-			var ss = $("#start .badge")
-			var i
-			var span = $("#start span")
-			for (i = 0; i<span.length;i++) {
-				$(span[i]).removeClass('yellow')
-			}
-			for (i = 0; i<span.length;i++) {
-			if(this == span[i]){
-				break;
-			}
-			$(span[i]).addClass('yellow')
-			}
-			$(this).addClass('yellow')
-			ss.html(i+1)
-		})
-		// 收藏
-		$('#heart').click(function(argument) {
-			if ($(this).is('.red')){
-				$(this).removeClass('red')
-				return
-			}
-			$(this).addClass('red')
-		})
-
 		// 清空内容
 		$('#clear').click(function(){
 			console.log(1)
@@ -633,9 +462,6 @@
 		$(".carousel").carousel({
 			interval:3000
 		});
-		function aoksdjf(){
-			adkjsf;lkasd
-		}
 		$("#blue").hover(function(){
 			var s = $('#blue')
 			var b = s.is('.btn-default')
@@ -749,6 +575,205 @@
 				window.location.href = "/account/loginout"
 			}
 		});
+
+		// 独有操作===========================
+		// 收藏
+		$('#heart').click(function(argument) {
+			var movieId = $(this).attr("value")
+			if ($(this).hasClass('red')){
+				var status = "false"
+			}else{
+				var status = "true"
+			}
+			$.ajax({
+				url: 'user/collectfilm',
+				type: 'post',
+				dataType: 'json',
+				data: {"movieId": movieId,"status":status},
+				success:function(result){
+					console.log(result)
+					if (result.Status){
+						var text = parseInt($("#collect").text())
+						if (status == "true"){
+							$('#heart').addClass('red')
+							var text = parseInt($("#collect").text())
+							$("#collect").text(text+1)
+						}else {
+							$('#heart').removeClass('red')
+							$("#collect").text(text-1)
+						}
+					}else {
+						if (result.Msg == "请登录"){
+							$("#logings").click()
+							return
+						}
+						alert(result.Msg)
+					}
+				}
+			})
+		
+		})
+
+		// 评分
+		$("#start .star").click(	function(){
+			var movieId = $("#start").attr("value")
+			var i
+			var span = $("#start span")
+			for (i = 0; i<span.length;i++) {
+				if(this == span[i]){
+					break;
+				}
+			}
+			var t = this
+			var $t = $(this)
+			var score = i+1
+			$.ajax({
+				url: 'user/scorefilm',
+				type: 'post',
+				dataType: 'json',
+				data: {"score": score,"movieId":movieId},
+				success:function(result){
+					if (result.Status){
+						var j = 0
+						for (j = 0; j<span.length;j++) {
+							$(span[j]).removeClass('yellow')
+						}
+						for (j = 0; j<span.length;j++) {
+							if(t == span[j]){
+								break;
+							}
+							$(span[j]).addClass('yellow')
+						}
+						$t.addClass('yellow')
+						var ss = $("#start .badge")
+						ss.html(j+1)
+						location.reload()
+					}else{
+					if (result.Msg == "请登录"){
+							$("#logings").click()
+							return
+						}
+						alert(result.Msg)
+					}	
+				}
+			})
+		})
+
+		function score(){
+			var span = $("#start span")
+			var j = {{.person.Score}}
+			for (var i = 0;i<j;i++){
+				$(span[i]).addClass('yellow')
+			}
+			var ss = $("#start .badge")
+			ss.html(j)
+		}
+		$(function(){
+			score()
+		})
+
+		//提交评论
+		$("#submit").click(function(){
+			var content = $('#content').val()
+			var movieId = $("#heart").attr("value")
+			$.ajax({
+				url: 'user/movietalk',
+				type: 'post',
+				dataType: 'json',
+				data: {"content": content,"movieId":movieId},
+				success:function(result){
+					if (result.Status) {
+						location.reload()
+						return
+					}
+					else{
+						if (result.Msg == "请登入"){
+							$("#logings").click()
+							return
+						}
+						alert(result.Msg)
+					}
+				}
+			})
+		});
+
+		$(".pager a").click(function(e){
+			var ud = parseInt($(this).attr("value"))
+			console.log(ud)
+			e.preventDefault()
+			var page = parseInt($("#page").text())
+			if (ud == 0) {
+				if($("#prev").hasClass('disabled')){
+					alert("当前是首页")
+					return
+				}
+				page = page-1
+			}else{
+				if($("#next").hasClass('disabled')){
+					alert("当前是尾页")
+					return
+				}
+				page = page+1
+			}
+			console.log($(this)+page)
+			var movieId = parseInt($(".pager").attr("value"))
+			console.log("page"+page+" movieId"+movieId)
+			$.ajax({
+				url: '/movie/movietalkajax',
+				type: 'get',
+				dataType: 'json',
+				data: {"movieId":movieId,"page":page},
+				success:function(result){
+					$("#talk .pt").empty()
+					if (result.Status){
+						for(var i = 0;i<result.Object.length;i++){
+							var text = `<div class="col-sm-9 pt">
+											<hr>
+											<div class="col-sm-3 br1">
+												<div class="media">
+													<a href="" class="media-left">`+
+														"<img src="+result.Object[i].ImgHead+" height='50px'>"+
+													"</a>"+
+												"<div class='media-body'>"+
+													"<p>"+result.Object[i].Name+"</p>"+
+													"<p style='background-color: #679c21;color: white;' class='col-sm-1'>"+result.Object[i].Score+"</p>"+
+												"</div>"+
+											"</div>"+
+										"</div>"+
+										"<div class='col-sm-9 ''>"+
+											"<div class='well ptb'>"+result.Object[i].Content+"</div>"+
+										"</div>"+
+									"</div>"
+							$(".content").append(text)
+						}
+						if (result.Pref){
+							$("#prev").removeClass('disabled')
+						}else{
+							console.log(result.Pref)
+							$("#prev").addClass('disabled')
+						}
+						if(result.Next){
+							$("#next").removeClass('disabled')
+						}else{
+							$("#next").addClass('disabled')
+						}
+						$("#page").text(result.Page)
+					}
+				}
+			})
+		})
+
+		$("#filewrite").click(function(){
+			var movieId = parseInt($(".pager").attr("value"))
+			var s = $("#logins")
+			if (!s) {
+				console.log("没登录")
+				location.reload()
+				return
+			}
+			window.location.href = "/user/filmcritic?movieId="+movieId
+		
+		});
 	</script>
 </body>
-</html>
+</html>	

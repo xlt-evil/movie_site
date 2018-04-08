@@ -1,6 +1,6 @@
 package services
 
-import "movie_site/models"
+import "SB/movie_site/models"
 
 func FindAreaMenu()(resp MsgResponse){
 	a , err := models.FindAreaMenu()

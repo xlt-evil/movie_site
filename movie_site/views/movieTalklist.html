@@ -145,8 +145,6 @@
 			color: gray;
 		}
 	</style>
-
-
 </head>
 <body>
 	 <div class="container"> 
@@ -161,7 +159,7 @@
 						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
 						<li class="padding20 active"><a href="/filmreview">影评</a></li>
 						<!--  style="margin-right: 500px;" -->
-						<li class="padding20"><a href="">资讯</a></li>
+						<li class="padding20"><a href="/news">资讯</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
 						{{if .user}}
@@ -344,10 +342,9 @@
 									"<a href='/showtalk?id="+result.Object[i].Id +"'  style='text-decoration: none;'>"+
 										result.Object[i].Content
 									+"</a>"
-
-									text+="<span class='glyphicon glyphicon-thumbs-up mr10 green pointer'>10</span>"+
-									"<span class='glyphicon glyphicon-thumbs-down red mr10 pointer'>10</span>"+
-									"<span class='glyphicon glyphicon-option-horizontal pointer'>10评论</span>"+
+									text+="<span class='glyphicon glyphicon-thumbs-up mr10 green '>"+result.Object[i].Like+"</span>"+
+									"<span class='glyphicon glyphicon-thumbs-down red mr10 '>"+result.Object[i].Hate+"</span>"+
+									"<span class='glyphicon glyphicon-option-horizontal '>"+result.Object[i].TalkNum+"评论</span>"+
 								"</li>"+
 							"</ul>"+
 						"</div>"+
@@ -421,9 +418,9 @@
 								"<a href='/showtalk?id="+result.Object[i].Id +"'  style='text-decoration: none;'>"+
 										result.Object[i].Content
 									+"</a>"
-									text+="<span class='glyphicon glyphicon-thumbs-up mr10 green pointer'>10</span>"+
-									"<span class='glyphicon glyphicon-thumbs-down red mr10 pointer'>10</span>"+
-									"<span class='glyphicon glyphicon-option-horizontal pointer'>10评论</span>"+
+									text+="<span class='glyphicon glyphicon-thumbs-up mr10 green '>"+result.Object[i].Like+"</span>"+
+									"<span class='glyphicon glyphicon-thumbs-down red mr10 '>"+result.Object[i].Hate+"</span>"+
+									"<span class='glyphicon glyphicon-option-horizontal '>"+result.Object[i].TalkNum+"评论</span>"+
 								"</li>"+
 							"</ul>"+
 						"</div>"+

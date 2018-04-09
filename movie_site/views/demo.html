@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>上传电影</title>
+</head>
+<body>
+	<form enctype="multipart/form-data" method="post" action="/upload">
+		<input type="file" name="file"  id="file">
+		<input type="submit" name="">
+	</form>
+</body>
+	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
+<!-- 	<script type="text/javascript">
+		$("#btn").click(function(){
+			var sb = $("#file").val()
+			console.log(123)
+			$.ajax({
+		           type :'post',
+          		   url :'/upload',
+           		   data : "formdata",
+           		   cache : false,
+		           processData : false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+        		   contentType : false,
+				   data: {"file":sb},
+				   success:function(result){
+					if(result.Status){
+						alert("ok")
+					}else{
+						alert(result.Msg)
+					}
+				}
+			})
+		})
+	</script> -->
+</html>

@@ -15,7 +15,6 @@ func (this *UserController)ToPerson(){
 	}
 	this.TplName = "person.html"
 }
-
 //个人电影收藏
 func (this *UserController)CollectFilm(){
 	var resp services.MsgResponse
@@ -38,7 +37,6 @@ func (this *UserController)CollectFilm(){
 	resp = services.CollecFilm(this.User.Uid,movieId,collect)
 	return
 }
-
 //个人评分
 func (this *UserController)ScoreFilm(){
 	var resp services.MsgResponse
@@ -65,7 +63,7 @@ func (this *UserController)ScoreFilm(){
 	resp = services.ScoreFilm(this.User.Uid,movieId,score)
 	return
 }
-
+//电影短评发布
 func(this *UserController)MovieTalk(){
 	var resp services.MsgResponse
 	var mt models.MovieTalk
@@ -91,7 +89,6 @@ func(this *UserController)MovieTalk(){
 	resp.Status = true
 	return
 }
-
 //影评页面
 func(this *UserController)FilmCritic(){
 	if this.User == nil {
@@ -106,7 +103,6 @@ func(this *UserController)FilmCritic(){
 	this.Data["id"] = id
 	this.TplName = "write.html"
 }
-
 //发布影评
 func (this *UserController)ReleaseFilmCritic(){
 	var resp services.MsgResponse
@@ -167,7 +163,29 @@ func (this *UserController)FilmReviewFeel(){
 	resp = services.ReviewFeel(frid,this.User.Uid,feel)
 	return
 }
-
-
+//发布影评评论
+func (this *UserController)ReviewsRelease(){
+	var resp services.MsgResponse
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	if this.User == nil {
+		resp.Msg = "请登录"
+		return
+	}
+	frid,err := this.GetInt("frid")
+	if err != nil {
+		resp.Msg = "参数解析出错"
+		return
+	}
+	movieId,err := this.GetInt("movieId")
+	if err != nil {
+		resp.Msg = "参数解析出错"
+		return
+	}
+	content := this.GetString("content")
+	resp = services.ReviewsRelease(frid,movieId,this.User.Uid,content)
+}
 
 

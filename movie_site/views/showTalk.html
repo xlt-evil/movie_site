@@ -89,16 +89,16 @@
 					<ul class="nav navbar-nav " >
 						<li class="padding20" ><a href="/">首页</a></li>
 						<li class="padding20"><a href="/tomovielirbary">电影库</a></li>
-						<li class="padding20 active"><a href="/filmreview">影评</a></li>
+						<li class="padding20"><a href="/filmreview">影评</a></li>
 						<!--  style="margin-right: 500px;" -->
-						<li class="padding20"><a href="">资讯</a></li>
+						<li class="padding20"><a href="/news">资讯</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right paddingright20" id="mytabs">
 						{{if .user}}
                             <li class="padding20"><a href="/user/toperson" >{{.user.Name}}个人中心</a></li>
                             <li class="padding20"><a href="#" id = "loginout" >登出</a></li>
 						{{else}}
-                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal">登录</a></li>
+                            <li class="padding20"><a href="" data-toggle="modal" data-target="#myModal" id="logings">登录</a></li>
                             <li class="padding20"><a href="/account/toregister">注册</a></li>
 						{{end}}
 					</ul>
@@ -149,214 +149,64 @@
 				<span style="color: gray;">© 本文版权归作者 {{.talks.Name}}  所有，任何形式转载请联系作者。</span>
 				<hr>
 			</div>
-			<div class="col-sm-12 col-sm-offset-5">
-				<button class="btn btn-default">up&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>10</button>
-				<button class="btn btn-default">down&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>10</button>
+			<div class="col-sm-12 col-sm-offset-5" id="feel">
+				<button class="btn btn-default" value="2">up&nbsp;<span class="glyphicon glyphicon-thumbs-up" id="up">{{.talks.Like}}</span></button>
+				<button class="btn btn-default" value="1">down&nbsp;<span class="glyphicon glyphicon-thumbs-down" id="down">{{.talks.Hate}}</span></button>
 			</div>
-				<div class="container">
-
+		<div class="container" id="talk">
 			<div class="col-sm-9">
 				<h3 >短评</h3>
-				<hr>
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
 			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-3 br1">
-					<div class="media">
-						<a href="" class="media-left">
-							<img src="1.jpg" height="5%">
-						</a>
-						<div class="media-body">
-							<p> name</p>
-							<p style="background-color: #679c21;color: white;" class="col-sm-1">1</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-9 ">
-					<div class="well ptb">
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-						我我我我我我我我我我
-					</div>
-				</div>
-				<hr>
+			<div class="content">
+				{{if .list.Status}}
+					{{range $index,$talk1 := .list.Object}}
 				<div class="col-sm-12">
 					<hr>
+					<div class="col-sm-3 br1">
+						<div class="media">
+							<a href="" class="media-left">
+								<img src="{{$talk1.ImgHead}}" height="5%">
+							</a>
+							<div class="media-body">
+								<p>{{$talk1.Name}}</p>
+								<p style="background-color: #679c21;color: white;" class="col-sm-1">{{$talk1.Score}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-9 ">
+						<div class="well ptb">
+							{{$talk1.Content}}
+						</div>
+					</div>
+				</div>
+					{{end}}
+				{{else}}
+				<div class="col-sm-9">
+					<div class="alert alert-success" role="alert">
+	 					<p class="text-center">
+  							(￣▽￣)~*:暂无短评哦！快来占沙发呀
+						</p>
+					</div>
+				</div>
+			{{end}}
+			</div>
+			</div>
+					<div class="col-sm-12">
 					<nav aria-label="Page navigation ">
-   			 		 <ul class="pager">
-    					<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-    					<li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
-  					</ul>
-				</nav>
+			 			<ul class="pager" value="{{.movie.Object.Id}}">
+			 				{{if .list.Pref}}
+							<li class="previous" id="prev"><a href="#" value="0"><span aria-hidden="true">&larr;</span> Older</a></li>
+							{{else }}
+							<li class="previous disabled" id="prev"><a href="#" value="0"><span aria-hidden="true">&larr;</span> Older</a></li>
+							{{end}}
+							<span style="color: #39af84" id="page">1</span>
+							{{if .list.Next}}
+							<li class="next" id="next"><a href="#" value="1">Newer <span aria-hidden="true">&rarr;</span></a></li>
+							{{else}}
+							<li class="next disabled" id="next"><a href="#" value="1">Newer <span aria-hidden="true">&rarr;</span></a></li>
+							{{end}}
+						</ul>
+					</nav>
 				</div>
 			</div>
 			<div class="col-sm-12">
@@ -383,7 +233,7 @@
 				<div class="col-sm-6 col-sm-offset-9">
 					<div class="btn-group" role="group" aria-label="...">
   						<button type="button" class="btn btn-danger" id="clear">清空内容</button>
-  						<button type="button" class="btn btn-success">提交评论</button>
+  						<button type="button" class="btn btn-success" id="submit" value="{{.talks.MovieId}}">提交评论</button>
 				</div>
 				</div>
 			</div>
@@ -398,6 +248,55 @@
   			<p class="text-center">如果无意中侵犯了您的权益，请通知我（hjlmzx5@163.com)，我们会及时做相应处理，谢谢合作。</p>
   			</div>
 			<p class="text-center"><a href=""><small>&copy;Movie's Entral.com Author:Hxy</small></a></p>
+		</div>
+	</div>
+
+	<!-- 可以复用的弹框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content col-sm-8 col-sm-offset-2 ">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+					<h3 class="center ">为爱电影的人</h3>
+					<h5 class="center gray">For People Who love's Movie</small>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">用户名</label>  -->
+							<div class="col-sm-10">
+								<input type="text" name="" placeholder="请输入用户名" class="form-control username">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<!-- <label class="control-label col-sm-2">密码</label>  -->
+							<div class="col-sm-10">
+								<input type="password" name="" placeholder="请输入密码" class="form-control password">
+								<span style="color:#ec7474"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-10 ">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="">记住密码
+									</label>
+								</div>
+							</div>
+						</div>
+						 <div class="form-group">
+   							 <div class="col-sm-12">
+      							<button type="button" class="btn btn-primary btn-lg col-sm-10" id="login">登录</button>
+    						</div>
+  						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default col-sm-3" style="margin-right:30%; " type="button" data-dismiss="modal">忘记密码</button>
+					<button class="btn btn-primary col-sm-3" type="button" id="register">注册账号</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="../static/js/jquery-3.0.0.min.js"></script>
@@ -504,6 +403,140 @@
 		}
 		$(function(){
 			contents()
+		})
+
+		// ===============================自己特有
+		$("#feel button").click(function(){
+			var feel = $(this).attr("value")
+			var frid = $(".contents").attr("value")
+			var s = null
+			if (feel == 2){
+				s = $("#up")
+			}else if(feel == 1){
+				s =$("#down")
+			}
+			$.ajax({
+				url: '/user/filmreviewfeel',
+				type: 'post',
+				dataType: 'json',
+				data: {"feel":feel,"frid":frid },
+				success:function(result){
+					console.log(result)
+					if(result.Status){
+						if (result.Msg == "评论过的不能再评论了"){
+							alert(result.Msg)
+							return
+						}
+						if (feel == 2){
+							s.text(parseInt(s.text())+1)
+							return
+						}
+							s.text(parseInt(s.text())+1)
+							return
+					}
+					if (result.Msg == "请登录"){
+						$("#logings").click()
+						return
+					}
+					alert(result.Msg)
+				}
+			})
+		});
+
+		//提交评论
+		$("#submit").click(function(){
+			var frid = $(".contents").attr("value")
+			var content = $('#content').val()
+			var movieId = $("#submit").attr("value")
+			if (content == ""){
+				alert("不能为空啦！٩(๑>◡<๑)۶ ")
+				return 
+			}
+			$.ajax({
+				url: 'user/reviewsrelease',
+				type: 'post',
+				dataType: 'json',
+				data: {"content": content,"movieId":movieId,"frid":frid},
+				success:function(result){
+					if (result.Status) {
+						location.reload()
+						return
+					}
+					else{
+						if (result.Msg == "请登入"){
+							$("#logings").click()
+							return
+						}
+						alert(result.Msg)
+					}
+				}
+			})
+		});
+
+			// 复用分页
+			$(".pager a").click(function(e){
+				var ud = parseInt($(this).attr("value"))
+				e.preventDefault()
+				var page = parseInt($("#page").text())
+				if (ud == 0) {
+					if($("#prev").hasClass('disabled')){
+						alert("当前是首页")
+						return
+					}
+					page = page-1
+				}else{
+					if($("#next").hasClass('disabled')){
+						alert("当前是尾页")
+						return
+					}
+					page = page+1
+				}
+				var frid = $(".contents").attr("value")
+				$.ajax({
+					url: '/reviewtalk',
+					type: 'get',
+					dataType: 'json',
+					data: {"frid":frid,"page":page},
+					success:function(result){
+						$(".content").empty()
+						if (result.Status){
+							for(var i = 0;i<result.Object.length;i++){
+								var text = "<div class='col-sm-12'>"+
+												"<hr>"+
+												"<div class='col-sm-3 br1'>"+
+													"<div class='media'>"+
+														"<a href='' class='media-left'>"+
+													"<img src='"+result.Object[i].ImgHead+"' height='5%'>"+
+														"</a>"+
+													"<div class='media-body'>"+
+														"<p>"+result.Object[i].Name+"</p>"+
+														"<p style='background-color: #679c21;color: white;' class='col-sm-1'>"+result.Object[i].Score+"</p>"+
+													"</div>"+
+												"</div>"+
+												"</div>"+
+												"<div class='col-sm-9' >"+
+													"<div class='well ptb'>"+
+														result.Object[i].Content+
+													"</div>"+
+												"</div>"+
+											"</div>"
+								$(".content").append(text)
+							}
+							if (result.Pref){
+								$("#prev").removeClass('disabled')
+							}else{
+								console.log(result.Pref)
+								$("#prev").addClass('disabled')
+							}
+							if(result.Next){
+								$("#next").removeClass('disabled')
+							}else{
+								$("#next").addClass('disabled')
+							}
+							$("#page").text(result.Page)
+						}
+					}
+				})
 		})
 	</script>
 </body>

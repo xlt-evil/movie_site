@@ -15,7 +15,10 @@ func init() {
 	beego.Router("/reviewajaxlist", &controllers.MainController{},"get:ReviewAjaxList")
 	beego.Router("/showtalk",&controllers.MainController{},"get:ShowTalk")
 	beego.Router("/showtalkajax",&controllers.MainController{},"get:ShowTalkAjax")
-
+	beego.Router("/reviewtalk",&controllers.MainController{},"get:ReviewTalk")
+	beego.Router("/news",&controllers.MainController{},"get:News")
+	beego.Router("/demo",&controllers.MainController{},"get:Demo")
+	beego.Router("/upload",&controllers.MainController{},"post:Upload")
 
     //登录注册模块
     beego.AutoRouter(&controllers.AccountController{})

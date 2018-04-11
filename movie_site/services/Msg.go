@@ -22,7 +22,7 @@ func FindOfficalMsg(page int )(resp MovieResp){
 	if page <pages {
 		resp.Next = true
 	}
-	if count > 8 && page != 1 {
+	if count > 3 && page != 1 {
 		resp.Pref = true
 	}
 	if count == 0 {

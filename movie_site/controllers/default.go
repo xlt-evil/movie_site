@@ -111,8 +111,21 @@ func (this *MainController)ShowTalk(){
 }
 //资讯页面
 func(this *MainController)News(){
+	//resp := services.FindOfficalMsg(1)
+	//this.Data["official"] = resp
 	this.TplName = "news.html"
 }
+
+
+
+
+
+
+
+
+
+
+
 func(this *MainController)Demo(){
 	this.TplName = "demo.html"
 }

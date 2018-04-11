@@ -20,6 +20,7 @@ func init() {
 	beego.Router("/demo",&controllers.MainController{},"get:Demo")
 	beego.Router("/upload",&controllers.MainController{},"post:Upload")
 
+
     //登录注册模块
     beego.AutoRouter(&controllers.AccountController{})
 
@@ -28,4 +29,7 @@ func init() {
 
 	//电影模块
 	beego.AutoRouter(&controllers.MovieController{})
+
+	//消息模块
+	beego.AutoRouter(&controllers.MsgController{})
 }

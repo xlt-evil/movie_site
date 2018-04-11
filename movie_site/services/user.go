@@ -153,3 +153,43 @@ func ScoreFilm(uid string,movieId,score int)(resp MsgResponse){
 	resp.Status = true
 	return
 }
+//找到个人电影收藏
+func FindLikeMovieByUid(userId string,page int)(resp MovieResp){
+	resp.Status = false
+	pageIndex := util.PageIndex(page,util.UserCenterSize)
+	m,err := models.FindLikeMovie(userId,pageIndex,util.UserCenterSize)
+	if err != nil {
+		resp.Msg = "查询出错了"
+		return
+	}
+	count,err := models.CountLikeMoive(userId)
+	if err != nil {
+		resp.Msg = "总条数查询失败"
+		return
+	}
+	pages := util.PageNum(count,util.UserCenterSize)
+	ok :=pagination(&resp,pages,count,page,util.UserCenterSize)
+	if !ok {
+		return
+	}
+	GetMovieImgUrl(m)
+	resp.Object = m
+	resp.Status = true
+	resp.Page = page
+	return
+}
+//分页方法
+func pagination(resp *MovieResp,pages,count,page,pageSize int)(bool){
+	if page < pages {
+		resp.Next = true
+	}
+	if count >pageSize && page != 1{
+		resp.Pref = true
+	}
+	if count == 0 {
+		resp.Msg = "没有数据"
+		b := false
+		return b
+	}
+	return true
+}

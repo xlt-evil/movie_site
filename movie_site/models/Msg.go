@@ -16,7 +16,7 @@ type OfficalMsg struct {
 }
 
 func FindOfficalMsg(pageIndex,pageSize int)(list []OfficalMsg,err error){
-	sql := `SELECT Title,Content FROM official_msg
+	sql := `SELECT title,content FROM official_msg
 			LIMIT ?,?`
 	o := orm.NewOrm()
 	_,err = o.Raw(sql,pageIndex,pageSize).QueryRows(&list)

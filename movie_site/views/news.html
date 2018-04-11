@@ -189,7 +189,7 @@
 		<div class="col-sm12">
 			<ul class="nav nav-tabs  col-sm-12 " role="tablist" id="mytab">
 				<li role="presentation" class="active" ><a href="" value="1">最新资讯</a></li>
-				<li role="presentation"><a href="" value="2">官方消息</a></li>
+				<li role="presentation"><a href="" value="2" id="officialmsg">官方消息</a></li>
 			</ul>
 
 		</div>
@@ -210,21 +210,13 @@
 			</div>
 			<!-- 官方消息 -->
 			<div class="OFFICAL hidden">
-				<div class="col-sm-12 pno" id="offical">
-					<div class="panel panel-success">
-					  	<div class="panel-heading">
-					  		<h3>123213</h3>
-					  	</div>
-					  	<div class="panel-body">
-					  		adads
-					  	</div>
-					</div>
+				<div class="col-sm-12 pno" id="official">
 				</div>
 			</div>
 		</div>
 	</div>
 		<div class="col-sm-12">
-			<button class="btn btn-default col-sm-offset-5"  id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+			<button class="btn btn-default col-sm-offset-5"  id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off" value="1">
 				加载更多
 			</button>
 		</div>
@@ -241,25 +233,103 @@
 	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
 	<script>
 	  $('#myButton').on('click', function () {
-	  	console.log(123)
 	    var $btn = $(this).button('loading')
-	    setTimeout(function(){
-	    $btn.button('reset')
-		},3000);
+	    var url = ""
+	    if ($(".NEWS").hasClass('hidden')){
+	    	url = "/msg/officialmsg"
+	    }else {
+	    	url = "/msg/officialmsg"
+	    }
+	    var page  = $(this).attr("value")
+	    if (page == 0){
+	    	alert("已经到底了！")
+	    	$btn.button('reset')
+	    	return
+	    }
+	    page  = parseInt($(this).attr("value"))+1
+	    console.log(page+url)
+	    $.ajax({
+	    	url: url,
+	    	type: 'get',
+	    	dataType: 'json',
+	    	data: {"page": page},
+	    	success:function(result){
+	    		console.log("12321313")
+  				if (result.Status) {
+  					console.log(result.Object)
+  					for(var i = 0;i<result.Object.length;i++){
+  						var text = "<div class='panel panel-success'>"+
+					  					"<div class='panel-heading'>"+
+					  						"<h3>"+result.Object[i].Title+"</h3>"+
+					  					"</div>"+
+					  					"<div class='panel-body'>"+
+					  						result.Object[i].Content+
+					  					"</div>"+
+									"</div>"
+						$("#official").append(text)
+  					}
+  					if(result.Next){
+  						$('#myButton').attr("value",page)
+  					}else{
+  						$('#myButton').attr("value",0)//没有了
+  					}
+  					$btn.button('reset')
+
+  				}else{
+  					alert(result.Msg)
+  				}
+	    	}
+	    })
 	  })
-	  $("#mytab a").click(function(e){
-			e.preventDefault()
-			$(this).tab("show")
-			console.log($(this))
-			var val = $(this).attr("value")
-			if (val==1){
-				$(".NEWS").removeClass('hidden')
-				$(".OFFICAL").addClass("hidden")
-			}else{
-				$(".NEWS").addClass('hidden')
-				$(".OFFICAL").removeClass("hidden")
-			}
-		})
+
+
+
+  	$("#mytab a").click(function(e){
+		e.preventDefault()
+		$(this).tab("show")
+		console.log($(this))
+		var val = $(this).attr("value")
+		if (val==1){
+			$(".NEWS").removeClass('hidden')
+			$(".OFFICAL").addClass("hidden")
+		}else{
+			$(".NEWS").addClass('hidden')
+			$(".OFFICAL").removeClass("hidden")
+		}
+  	})
+
+  	$("#officialmsg").click(function(){
+  		$.ajax({
+  			url: 'msg/officialmsg',
+  			type: 'get',
+  			dataType: 'json',
+  			data: {"page": 1},
+  			success:function(result){
+  				$("#official").empty()
+  				if (result.Status) {
+  					for(var i = 0;i<result.Object.length;i++){
+  						var text = "<div class='panel panel-success'>"+
+					  					"<div class='panel-heading'>"+
+					  						"<h3>"+result.Object[i].Title+"</h3>"+
+					  					"</div>"+
+					  					"<div class='panel-body'>"+
+					  						result.Object[i].Content+
+					  					"</div>"+
+									"</div>"
+						$("#official").append(text)
+  					}
+  					if(result.Next){
+  						$('#myButton').attr("value",1)
+  					}else{
+  						$('#myButton').attr("value",0)//没有了
+  					}
+  					
+  				}else{
+  					alert(result.Msg)
+  				}
+  			}	
+  		})
+  	})
 	</script>
 </body>
 </html>

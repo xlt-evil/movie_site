@@ -106,7 +106,6 @@ func (this *MainController)ShowTalk(){
 	this.Data["talks"] = resp.Object
 	talk := services.LoadReleaseList(1,id)
 	this.Data["list"] = talk
-	fmt.Println(talk)
 	this.TplName = "showTalk.html"
 }
 //资讯页面

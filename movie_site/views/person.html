@@ -229,34 +229,23 @@
                         </div>
                     </div>
                     {{end}}
-                    <button class="btn btn-info col-sm-offset-5" id="watchmovie" value="1">查看更多</button>
-                    <hr class="col-sm-11">
                 </div>
-                <h2 class="col-sm-12"  style="margin-bottom: 2%">我的影评</h2>
-                <div class="col-sm-12 ">
-                    <a href="" class="col-sm-12">
-                        <p class="col-sm-3">name</p>
-                        <p class="col-sm-6"> content</p>
-                        <p class="col-sm-3">time</p>
-                    </a>
-                    <a href="" class="col-sm-12">
-                        <p class="col-sm-3">name</p>
-                        <p class="col-sm-6"> content</p>
-                        <p class="col-sm-3">time</p>
-                    </a>
-                    <a href="" class="col-sm-12">
-                        <p class="col-sm-3">name</p>
-                        <p class="col-sm-6"> content</p>
-                        <p class="col-sm-3">time</p>
-                    </a>
-                    <button class="btn btn-info col-sm-offset-5">查看更多</button>
-                    <hr class="col-sm-11">
-                </div>
+                <button class="btn btn-info col-sm-offset-5" id="watchmovie" value="2">查看更多</button>
+                <hr class="col-sm-11">
 
-                <h2 class="col-sm-12"  style="margin-bottom: 2%">我上传的电影<small>(暂定)</small></h2>
-                <div class="col-sm-12">
-                    <hr class="col-sm-11">
+                <h2 class="col-sm-12"  style="margin-bottom: 2%">我的影评</h2>
+                <div class="col-sm-12 " id="myreview">
+                    {{range $index,$review :=  .review.Object}}
+                    <a href="/showtalk?id={{$review.Id}}" class="col-sm-12">
+                        <p class="col-sm-3">{{$review.MovieName}}</p>
+                        <p class="col-sm-6">{{$review.Title}}</p>
+                        <p class="col-sm-3">{{$review.Date}}</p>
+                    </a>
+                    {{end}}
                 </div>
+                <button class="btn btn-info col-sm-offset-5" value="2" id="watchReview">查看更多</button>
+                <hr class="col-sm-11">
+
             </div>
             <!-- page1 -->
 
@@ -509,24 +498,77 @@
     })
 
     $("#watchmovie").click(function(){
-        var page = ParseInt($("#watchmovie").attr("value"))
+        var page = parseInt($("#watchmovie").attr("value"))
         if (page == 0) {
             alert("已经没有了")
             return
         }
-        page = page +1
         $.ajax({
             url: '/user/checklikemovie',
             type: 'get',
             dataType: 'json',
             data: {"page": page},
             success:function(result){
+                console.log(result)
                 if (result.Status){
-                    mymovie
+                    var s = $("#mymovie")
+                    if (result.Object.length == 0){
+                        alert("已经没有了")
+                         $("#watchmovie").attr("value",0)
+                        return
+                    }
+                    for(var i = 0;i<result.Object.length;i++){
+                        var text = "<div class='col-sm-4'>"+
+                                        "<div class='thumbnail'>"+
+                                            "<div class='caption'>"+
+                                                "<p class='text-center'>"+result.Object[i].MovieName+"</p>"+
+                                            "</div>"+
+                                            "<a href='/movieintrdouce?movieId="+result.Object[i].Id+"'>"+"<img src="+result.Object[i].MovieImg+" class='img-responsive'></a>"+
+                                        "</div>"+
+                                    "</div>"
+                        s.append(text)
+                    }
+                    $("#watchmovie").attr("value",result.Page)
                 }
             }
         })
     })
+
+    $("#watchReview").click(function(){
+        var page = parseInt($("#watchReview").attr("value"))
+        if (page == 0) {
+            alert("已经没有了")
+            return
+        }
+        console.log("asdasdasdASf")
+        $.ajax({
+            url: '/user/checkmyreview',
+            type: 'get',
+            dataType: 'json',
+            data: {"page": page},
+            success:function(result){
+                $("#watchReview").attr("value",result.Page)
+                if (result.Status){
+                    var s = $("#myreview")
+                    if (result.Object.length == 0){
+                        alert("已经没有了")
+                         $("#watchReview").attr("value",0)
+                        return
+                    }
+                    for(var i = 0;i<result.Object.length;i++){
+                        var text = 
+                        "<a href='/showtalk?id="+result.Object[i].Id+" class='col-sm-12'>"+
+                            "<p class='col-sm-3'>"+result.Object[i].MovieName+"</p>"+
+                            "<p class='col-sm-6'>"+result.Object[i].Title+"</p>"+
+                            "<p class='col-sm-3'>"+result.Object[i].Date+"</p>"+
+                        "</a>"
+                        s.append(text)
+                    }
+                    
+                }
+            }
+        })
+    });
 </script>
 </body>
 </html>

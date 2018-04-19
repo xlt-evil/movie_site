@@ -175,9 +175,39 @@ func FindLikeMovieByUid(userId string,page int)(resp MovieResp){
 	GetMovieImgUrl(m)
 	resp.Object = m
 	resp.Status = true
-	resp.Page = page
+	if !resp.Next {
+		resp.Page = 0
+	}
 	return
 }
+//找到个人影评
+func FineMyReviewByUid(userId string,page int)(resp MovieResp) {
+	resp.Status = false
+	pageIndex := util.PageIndex(page,util.UserCenterSize)
+	r,err := models.GetMyReview(userId,pageIndex,util.UserCenterSize)
+	if err != nil {
+		resp.Msg = "查询我的个人影评失败"
+		return
+	}
+	count,err:= models.GetMyReviewCount(userId)
+	if err != nil {
+		resp.Msg = "查询我的个人影评总条数失败"
+		return
+	}
+	//分页
+	pages := util.PageNum(count,util.UserCenterSize)
+	ok :=pagination(&resp,pages,count,page,util.UserCenterSize)
+	if !ok {
+		return
+	}
+	resp.Object = r
+	resp.Status = true
+	if !resp.Next {
+		resp.Page = 0
+	}
+	return
+}
+
 //分页方法
 func pagination(resp *MovieResp,pages,count,page,pageSize int)(bool){
 	if page < pages {

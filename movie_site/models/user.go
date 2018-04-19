@@ -118,3 +118,34 @@ func CountLikeMoive(userId string)(count int,err error){
 	err = o.Raw(sql,userId).QueryRow(&count)
 	return
 }
+
+
+
+type MyReview struct {
+	Id int
+	MovieName string
+	Date string
+	Title string
+}
+//个人影评
+func GetMyReview(uid string,pageIndex,pageSize int)(r []MyReview,err error){
+	sql := `SELECT m.movie_name,f.title,f.id,f.date
+			FROM film_review f
+			LEFT JOIN movie m on f.movie_id = m.id
+			WHERE f.user_id = ?
+			ORDER BY f.date DESC
+			LIMIT ?,?`
+	o := orm.NewOrm()
+	_,err = o.Raw(sql,uid,pageIndex,pageSize).QueryRows(&r)
+	return
+}
+
+//个人影评
+func GetMyReviewCount(uid string)( count int,err error){
+	sql := `SELECT COUNT(1)
+			FROM film_review f
+			WHERE f.user_id = ?`
+	o := orm.NewOrm()
+	err = o.Raw(sql,uid).QueryRow(&count)
+	return
+}

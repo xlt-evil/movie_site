@@ -3,7 +3,6 @@ package controllers
 import (
 	"SB/movie_site/services"
 	"SB/movie_site/models"
-	"fmt"
 )
 
 type UserController struct {
@@ -14,9 +13,10 @@ func (this *UserController)ToPerson(){
 	if this.User == nil {
 		this.Ctx.Redirect(302,"/")
 	}
-	resp := services.FindLikeMovieByUid(this.User.Uid,1)
-	fmt.Println(resp)
+	resp := services.FindLikeMovieByUid(this.User.Uid,1)//收藏电影
+	resp1 := services.FineMyReviewByUid(this.User.Uid,1)//影评
 	this.Data["movie"] = resp
+	this.Data["review"] = resp1
 	this.TplName = "person.html"
 }
 //个人电影收藏
@@ -210,6 +210,27 @@ func (this *UserController)CheckLikeMovie(){
 	}
 	resp = services.FindLikeMovieByUid(this.User.Uid,page)
 	return
-
 }
+
+//查看个人影评喜好
+func (this *UserController)CheckMyReview(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	if this.User == nil {
+		resp.Msg = "请登录"
+		return
+	}
+	page, err := this.GetInt("page")
+	if err != nil {
+		resp.Msg = "参数解析出错"
+		return
+	}
+	resp = services.FineMyReviewByUid(this.User.Uid,page)
+	return
+}
+
 

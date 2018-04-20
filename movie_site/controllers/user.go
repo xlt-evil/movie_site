@@ -3,6 +3,7 @@ package controllers
 import (
 	"SB/movie_site/services"
 	"SB/movie_site/models"
+	"fmt"
 )
 
 type UserController struct {
@@ -15,8 +16,10 @@ func (this *UserController)ToPerson(){
 	}
 	resp := services.FindLikeMovieByUid(this.User.Uid,1)//收藏电影
 	resp1 := services.FineMyReviewByUid(this.User.Uid,1)//影评
+	resp2 := services.GetUserHistoryRecord(this.User.Uid,1)//观看记录
 	this.Data["movie"] = resp
 	this.Data["review"] = resp1
+	this.Data["history"] = resp2
 	this.TplName = "person.html"
 }
 //个人电影收藏
@@ -211,7 +214,6 @@ func (this *UserController)CheckLikeMovie(){
 	resp = services.FindLikeMovieByUid(this.User.Uid,page)
 	return
 }
-
 //查看个人影评喜好
 func (this *UserController)CheckMyReview(){
 	var resp services.MovieResp
@@ -230,6 +232,124 @@ func (this *UserController)CheckMyReview(){
 		return
 	}
 	resp = services.FineMyReviewByUid(this.User.Uid,page)
+	return
+}
+//个人基本信息修改
+func (this *UserController)PersonMsgUpdate(){
+	var resp services.MsgResponse
+	resp.Status = true
+	fmt.Println("dwfnadkjhfbaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	if this.User == nil {
+		this.Ctx.Redirect(302,"/")
+		return
+	}
+	condition := ""
+	paras := []string{}
+	nick := this.GetString("nick")
+	if nick != "" {
+		condition += " name = ? ,"
+		paras = append(paras,nick)
+	}
+	birth := this.GetString("birth")
+	if birth != ""{
+		condition += " birthday = ? ,"
+		paras = append(paras,birth)
+	}
+	sign := this.GetString("sign")
+	if sign != ""{
+		condition += " person_sign = ? ,"
+		paras = append(paras,sign)
+	}
+	if condition != ""{
+		condition = condition[:len(condition)-2]
+	}
+	resp = services.UpdatePersonBaseMsg(condition,paras,this.User.Uid)
+	return
+}
+//找到个人信息
+func (this *UserController)UpdateMyNotice(){
+	var resp services.MsgResponse
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	if this.User == nil {
+		this.Ctx.Redirect(302,"/")
+	}
+	notice := this.GetString("notice")
+	resp = services.UpdateMyNotice(this.User.Uid,notice)
+	return
+}
+//更新密码
+func (this *UserController)UpdatePassword(){
+	var resp services.MsgResponse
+	resp.Status = false
+	defer func() {
+		this.Data["json"]  = resp
+		this.ServeJSON()
+	}()
+	old := this.GetString("old")
+	if old == ""{
+		resp.Msg = "密码不能为空"
+		return
+	}
+	new := this.GetString("new")
+	if new == ""{
+		resp.Msg = "密码不能为空"
+		return
+	}
+	resp = services.UpdateMyPassword(this.User.Uid,new,old)
+	return
+}
+//更新头像
+func (this *UserController)UpdateImg(){
+	flag := this.GetString("flag")
+	defer func() {
+		this.Redirect("/user/toperson",302)
+	}()
+	if flag == "0" {
+		return
+	}
+	uid := this.GetString("uid")
+	imgname := this.GetString("img")
+	services.UpdateImg(uid,imgname)
+}
+//查看观影历史
+func (this *UserController)CheckHistoryRecord(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	page,err := this.GetInt("page")
+	if err != nil {
+		resp.Msg = "参数解析失败"
+		return
+	}
+	fmt.Println("page",page)
+	resp = services.GetUserHistoryRecord(this.User.Uid,page)
+	return
+}
+//删除历史记录
+func (this *UserController)DeleteHistoryRecord(){
+	var resp services.MsgResponse
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	movieId ,err:=this.GetInt("movieId")
+	if err != nil {
+		resp.Msg = "解析参数失败"
+		return
+	}
+	resp = services.DeleteMyHistory(this.User.Uid,movieId)
 	return
 }
 

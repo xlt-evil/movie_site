@@ -80,6 +80,8 @@ func (this *MainController)MoviePlayer(){
 		this.Data["person"] = models.PersonFilm{Collect:"false",Score:0}
 	}else{
 		user := services.CollectStatus(this.User.Uid,id)
+		respsss := services.InsertHistory(this.User.Uid,id)//添加观看记录
+		fmt.Println("历史记录",respsss)
 		this.Data["person"] = user.Object
 	}
 	if err != nil {

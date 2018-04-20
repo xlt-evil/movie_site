@@ -15,6 +15,7 @@ type OfficalMsg struct {
 	Href    string    `description:"跳转路径暂定"`
 }
 
+//找到官方消息
 func FindOfficalMsg(pageIndex,pageSize int)(list []OfficalMsg,err error){
 	sql := `SELECT title,content FROM official_msg
 			LIMIT ?,?`
@@ -23,6 +24,7 @@ func FindOfficalMsg(pageIndex,pageSize int)(list []OfficalMsg,err error){
 	return
 }
 
+//统计官方消息
 func CountOfficalMsg()(count int,err error){
 	sql := `SELECT COUNT(1) FROM official_msg`
 	o := orm.NewOrm()

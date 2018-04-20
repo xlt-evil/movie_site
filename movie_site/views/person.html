@@ -118,7 +118,7 @@
     </style>
     <style type="text/css">
         .person{
-            background-image: url(/static/img/20.webp);
+            background: url(/static/img/20.webp) no-repeat;
         }
         .pl0{
             padding-left: 0px;
@@ -186,7 +186,7 @@
             <div class="col-sm-2 pl0">
                 <img  src = "{{.user.ImgHead}}" style="border-radius: 50%;height: 70px;" class="img-responsive " >
             </div>
-            <div class="col-sm-7 pl0">
+            <div class="col-sm-8 pl0">
                 <blockquote style="border-left: 0px;margin: 0px;" class="pl0">
                     <p style="color: white;"><strong>{{.user.Name}}</strong></p>
                     <footer style="color: #d6dee4">{{.user.PersonSign}} </footer>
@@ -230,7 +230,7 @@
                     </div>
                     {{end}}
                 </div>
-                <button class="btn btn-info col-sm-offset-5" id="watchmovie" value="2">查看更多</button>
+                <button class="btn btn-info col-sm-offset-5" id="watchmovie" value="{{.movie.Page}}" style="margin-bottom: 10px;">查看更多</button>
                 <hr class="col-sm-11">
 
                 <h2 class="col-sm-12"  style="margin-bottom: 2%">我的影评</h2>
@@ -243,117 +243,127 @@
                     </a>
                     {{end}}
                 </div>
-                <button class="btn btn-info col-sm-offset-5" value="2" id="watchReview">查看更多</button>
+                <button class="btn btn-info col-sm-offset-5" value="{{.review.Page}}" id="watchReview" style="margin-bottom: 10px;">查看更多</button>
                 <hr class="col-sm-11">
-
             </div>
             <!-- page1 -->
 
 
             <div id="page-2" class="ps hidden">
-                <ul class="nav nav-pills">
-                    <li class="active"><a href="#">基本信息修改</a></li>
-                    <li><a href="#">密码修改</a></li>
+                <ul class="nav nav-pills" id="personmsg">
+                    <li class="active" value="1"><a href="#">基本信息修改</a></li>
+                    <li value="2"><a href="#" >密码修改</a></li>
+                    <li value="3"><a href="#" >更改头像</a></li>
                 </ul>
                 <p class="bg-primary col-sm-12" style="font-size:20px;height: 30px;">我的信息</p>
                 <div class="com-sm-12">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">昵称</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="" placeholder="请输入新的昵称" class="form-control">
+                    <div id="basemsg">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" >昵称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="" id= "nick" placeholder="请输入新的昵称" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">账户名</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="" placeholder="账户名" class="form-control" readonly="readonly">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">账户名</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="" placeholder="{{.user.Uid}}" class="form-control" readonly="readonly">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">出生日期</label>
-                            <div class="col-sm-4">
-                                <input type="date" name="" value="2018-12-12" class="form-control" >
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" >出生日期</label>
+                                <div class="col-sm-4">
+                                    <input type="date" name="" value="2018-12-12" class="form-control" id="birth">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">我的签名</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" placeholder="人生格言走一波- ( ゜- ゜)つロ" maxlength="50"></textarea>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">我的签名</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="sign" placeholder="人生格言走一波- ( ゜- ゜)つロ" maxlength="50"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">更改头像</label>
-                            <div class="col-sm-8">
-                                <input type="file" id="image" name="" accept="image/*">
+                            <div class="col-sm-12">
+                                <button class="btn btn-info col-sm-3 col-sm-offset-2" id="savemsg">保存</button>
                             </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <button class="btn btn-info col-sm-3 col-sm-offset-2">保存</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                     <!-- page2-2  -->
-                    <div id="page2-2">
+                    <div id="page2-2" class="hidden pwds">
                         <div class="com-sm-12">
                             <form class="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">修改密码</label>
                                     <div class="col-sm-8">
                                         <div></div>
-                                        <input type="text" name="" placeholder="请输入现在的密码" class="form-control">
+                                        <input type="password" name="" placeholder="请输入现在的密码" id= "oldpassword" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">新密码</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="" placeholder="请输入修改密码" class="form-control">
+                                        <input type="password" name="" placeholder="请输入修改密码" id="newpassword" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">确认密码</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="" placeholder="请再输入一次修改密码" class="form-control">
+                                        <input type="password" name="" placeholder="请再输入一次修改密码" id="newpassword1" class="form-control">
+                                        <span style="color: red" id="tip"></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <button class="btn btn-info col-sm-3 col-sm-offset-2">保存</button>
+                                    <button class="btn btn-info col-sm-3 col-sm-offset-2" id="savepassword">保存</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+
+                    <div id="page3-3" class="hidden imgs">
+                        <form enctype="multipart/form-data" method="post" action="http://localhost:8080/updateImg" class="form-horizontal">
+                            <input type="file" name="file"  id="file">
+                            <input type="uid" name="uid" value="{{.user.Uid}}" class="hidden">
+                            <input type="submit" name="">
+                        </form>
+                    </div>
+                    <p>&nbsp;</p>
                 </div>
             </div>
             <!-- page2 -->
 
 
             <div id="page-3" class="ps hidden">
-                <div class="row mtb2">
-                    <div class="col-sm-4 " style="padding-left: 4%">
-                        <img src="1.jpg" class="img-responsive">
+                <h3 class="col-sm-12">历史记录</h3>
+                <div class="history">
+                {{range $index,$h := .history.Object}}
+                    <div class="row mtb2">
+                        <div class="col-sm-4 " style="padding-left: 4%">
+                            <img src="{{$h.MovieImg}}" class="img-responsive">
+                        </div>
+                        <div class="col-sm-8" style="">
+                            <p class="col-sm-12 lead " style="padding-bottom: 4%; ">
+                                {{$h.MovieName}}
+                            </p>
+                            <small class="col-sm-12">{{$h.Date}}</small>
+                            <hr class="col-sm-9">
+                            <span class="glyphicon glyphicon-hand-up col-sm-1 look pointer"  value={{$h.MovieId}}></span>
+                            <span class="glyphicon glyphicon-trash col-sm-1 delete pointer"  value={{$h.MovieId}}></span>
+                        </div>
                     </div>
-                    <div class="col-sm-8" style="">
-                        <p class="col-sm-12 lead " style="padding-bottom: 4%; ">
-                            title
-                        </p>
-                        <small class="col-sm-12">2018-2-12 12:59:59</small>
-                        <hr class="col-sm-9">
-                        <span class="glyphicon glyphicon-hand-up col-sm-1"></span>
-                        <span class="glyphicon glyphicon-trash col-sm-1"></span>
-                    </div>
+                {{end}}
                 </div>
-                <button class="btn btn-info col-sm-3 col-sm-offset-4">加载更多</button>
+                <button class="btn btn-info col-sm-3 col-sm-offset-4" value="{{.history.Page}}" id="history" style="margin-bottom: 10px;">加载更多</button>
             </div>
             <!-- page3 -->
 
 
-            <div id="page-4" class="ps hidden">
+            <div id="page-4" class="ps hidden msg">
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#">回复我的</a></li>
-                    <li><a href="#">系统通知</a></li>
+                    <li class="active" value="1"><a href="#">回复我的</a></li>
+                    <li value="2"><a href="#" >系统通知</a></li>
                 </ul>
                 <hr class="col-sm-11">
-                <div class="row mtb2 pl0 pr0">
+                <div class="row mtb2 pl0 pr0" id="minemsg">
                     <div class="col-sm-2 " style="padding-left: 4%">
                         <img src="1.jpg" class="img-responsive img-circle">
                     </div>
@@ -365,8 +375,9 @@
                         <a href="" class="col-sm-11 col-sm-offset-1 a" >评论name</a>
                         <hr class="col-sm-12">
                     </div>
+                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">加载更多</button>
                 </div>
-                <div id="page4-2">
+                <div id="page4-2 " class="hidden sysmsg">
                     <div class="row mtb2 pl0 pr0">
                         <div class="col-sm-12">
                             <div class="panel panel-default ">
@@ -377,30 +388,34 @@
                             </div>
                         </div>
                     </div>
+                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">加载更多</button>
+                    <p class="col-sm-6">&nbsp;</p>
                 </div>
-                <button class="btn btn-info col-sm-3 col-sm-offset-4">加载更多</button>
             </div>
             <!-- page4 -->
 
 
             <div id="page-5" class="ps hidden">
+                <ul class="nav nav-pills" id="advise">
+                        <li class="active" value="1"><a href="#">我的意见</a></li>
+                        <li value="2"><a href="#">提意见</a></li>
+                </ul>
                 <div class="page-5-1">
-                    <ul class="nav nav-pills">
-                        <li class="active"><a href="#">我的意见</a></li>
-                        <li><a href="#">提意见</a></li>
-                    </ul>
+
                     <hr class="col-sm-11" style="margin-left: 10px;">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" id="myadvise">
                         <div class="panel panel-success">
                             <div class="panel-heading">Panel heading without title</div>
                             <div class="panel-body">
                                 Panel content
                             </div>
                         </div>
+                          <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">查看更多</button>
+                         <hr class="col-sm-12">
                     </div>
-                    <hr class="col-sm-12">
+                 
                 </div>
-                <div class="page-5-2">
+                <div class="page-5-2 opiniton hidden">
                     <h3 class="col-sm-12">意见单</h3>
                     <div class="col-sm-12">
                         <form class="form-horizontal">
@@ -413,11 +428,11 @@
                             <div class="input-group col-sm-8 col-sm-offset-1 mtb2">
                                 <input type="text" name="" placeholder="Title" class="form-control" >
                             </div>
-                            <div class="input-group col-sm-8 col-sm-offset-1 mtb2">
+                            <div class="input-group col-sm-8 col-sm-offset-1 mtb2" style="margin-bottom: 10px;">
                                 <textarea class="form-control" placeholder="请输入你具体建议或要求..." style="height: 100px;"></textarea>
                             </div>
                         </form>
-                        <button class="btn btn-info col-sm-3 col-sm-offset-4">提交</button>
+                        <button class="btn btn-info col-sm-3 col-sm-offset-3" style="margin-bottom: 10px;">提交</button>
                     </div>
                 </div>
             </div>
@@ -437,12 +452,12 @@
         </div>
         <div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
             <h5><strong>公告</strong></h5>
-            <textarea class="form-control" maxlength="150" style="height: 100px;margin-bottom: 3%;border:none;" placeholder="编辑空间公告"></textarea>
+            <textarea class="form-control" maxlength="150" style="height: 100px;margin-bottom: 3%;border:none;" placeholder="编辑空间公告" id="notice">{{.user.PersonNotice}}</textarea>
         </div>
         <div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
             <ul class="list-unstyled col-sm-12 plr" style="margin-bottom: 0px;">
                 <li class="col-sm-5 "><span class="badge" style="background-color: #7cd4f2">UID</span>&nbsp;14182261</li>
-                <li class="col-sm-7 " ><span class="glyphicon glyphicon-time" style="color: #9bd99f">&nbsp;</span>注册于 2018-5-15</li>
+                <li class="col-sm-7 " ><span class="glyphicon glyphicon-time" style="color: #9bd99f">&nbsp;</span>注册于 {{.user.RegisterTime}}</li>
                 <br>
                 <hr>
                 <li class="col-sm-5 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-bell" style="color: #f9c86d"></span>&nbsp;02-12</li>
@@ -473,7 +488,7 @@
             window.location.href = "/account/loginout"
         }
     });
-
+// 二级导航分布
     $("#mytab li").click(function(){
         $("#mytab li").removeClass('actives')
         $(this).addClass('actives')
@@ -496,13 +511,14 @@
             $("#page-5").removeClass('hidden')
         }
     })
-
+// 查看电影异步
     $("#watchmovie").click(function(){
         var page = parseInt($("#watchmovie").attr("value"))
         if (page == 0) {
             alert("已经没有了")
             return
         }
+        page = parseInt(page)+1
         $.ajax({
             url: '/user/checklikemovie',
             type: 'get',
@@ -533,13 +549,14 @@
             }
         })
     })
-
+// 查看影评异步
     $("#watchReview").click(function(){
         var page = parseInt($("#watchReview").attr("value"))
         if (page == 0) {
             alert("已经没有了")
             return
         }
+        page = parseInt(page)+1
         console.log("asdasdasdASf")
         $.ajax({
             url: '/user/checkmyreview',
@@ -550,7 +567,7 @@
                 $("#watchReview").attr("value",result.Page)
                 if (result.Status){
                     var s = $("#myreview")
-                    if (result.Object.length == 0){
+                    if (result.Object == null){
                         alert("已经没有了")
                          $("#watchReview").attr("value",0)
                         return
@@ -569,6 +586,190 @@
             }
         })
     });
+// 三级导航
+    $("#personmsg li").click(function(){
+        $("#personmsg li").removeClass('active')
+        $(this).addClass('active')
+        console.log($(this).attr("value"))
+        if($(this).attr("value") == "1"){
+            $(".pwds").addClass('hidden')
+            $(".imgs").addClass('hidden')
+            $("#basemsg").removeClass('hidden')
+        }else if($(this).attr("value") == "2"){
+            $("#basemsg").addClass('hidden')
+            $(".imgs").addClass('hidden')
+            $(".pwds").removeClass('hidden')
+            console.log(1231231)
+        }else {
+            $(".pwds").addClass('hidden')
+            $("#basemsg").addClass('hidden')
+            $(".imgs").removeClass('hidden')
+        }
+    });
+// 保存信息
+    $("#savemsg").click(function(){
+        var nick = $("#nick").val()
+        var birth = $("#birth").val()
+        var sign = $("#sign").val()
+        if (sign.length >= 35){
+            alert("不能超过35个字,谢谢")
+            return
+        }
+        $.ajax({
+            url: '/user/personmsgupdate',
+            type: 'post',
+            dataType: 'json',
+            data: {"nick":nick,"birth":birth,"sign":sign},
+            success:function(result){
+                if (result.Status) {
+                    location.reload();
+                }
+                alert(result.Msg)
+            },
+        })
+    });
+// 修改公告
+    $("#notice").blur(function(){
+        var text = $(this).val()
+        if(text.length >= 200) {
+            alert("请保持公告的字符在200字以内谢谢啦")
+            return
+        }
+        $.ajax({
+            url: '/user/updatemynotice',
+            type: 'post',
+            dataType: 'json',
+            data: {"notice": text},
+            success:function(result){
+                if (result.Status) {
+                    location.reload()
+                }
+                alert(result.Msg)  
+            }
+        })
+    });
+// 保存密码
+    $("#savepassword").click(function(){
+        var old = $("#oldpassword").val()
+        var new1 = $("#newpassword").val()
+        var news = $("#newpassword1").val()
+        if (news!=new1){
+            $("#tip").text("密码不一致")
+            return
+        }
+        $("#tip").text("")
+        $.ajax({
+            url: '/user/updatepassword',
+            type: 'post',
+            dataType: 'json',
+            data: {"old": old,"new":news},
+            success:function(result){
+                console.log(result)
+                if (result.Status){
+                    alert("修改密码成功")
+                     $("#tip").text("")
+                     location.reload()
+                    return
+                }
+                $("#tip").text(result.Msg)
+            }
+        })
+    });
+// 观看电影历史跳转
+    $(document).on("click",".look",function(){
+        var s = $(this)
+        var id = s.attr("value")
+        console.log(123213)
+        window.location.href = "/movieplayer?movieId="+id
+    })
+// 异步加载观看电影历史
+    $("#history").click(function(){
+        var page = $(this).attr("value")
+        if (page == 0){
+            alert("已经是尾页了")
+            return
+        }
+        page = parseInt(page)+1
+        $.ajax({
+            url: '/user/checkhistoryrecord',
+            type: 'get',
+            dataType: 'json',
+            data: {"page": page},
+            success:function(result){
+                console.log(result)
+                if (result.Status){
+                     for (var i = 0;i<result.Object.length;i++){
+                        var text = " <div class='row mtb2'>"+
+                                    "<div class='col-sm-4 ' style='padding-left: 4%'>"+
+                                    "<img src="+result.Object[i].MovieImg+" class='img-responsive'>"+
+                                    "</div>"+
+                                    "<div class='col-sm-8' style=''>"+
+                                    "<p class='col-sm-12 lead ' style='padding-bottom: 4%; '>"+
+                                        result.Object[i].MovieName+
+                                    "</p>"+
+                                    "<small class='col-sm-12'>"+result.Object[i].Date+"</small>"+
+                                    "<hr class='col-sm-9'>"+
+                                    "<span class='glyphicon glyphicon-hand-up col-sm-1 look pointer'  value="+result.Object[i].MovieId+"></span>"+
+                                    "<span class='glyphicon glyphicon-trash col-sm-1 delete pointer'  value="+result.Object[i].MovieId+"></span>"+
+                                    "</div>"+
+                                    "</div>"
+                        $(".history").append(text)
+                    }
+                    $("#history").attr("value",result.Page)
+                }   
+            }
+        })
+    })
+// 删除电影记录
+    $(document).on('click', '.delete', function(event) {
+        var id = $(this).attr('value');
+        var the = $(this)
+        if (!confirm("确定要删除该条记录吗")){
+            return
+        }
+        $.ajax({
+            url: '/user/deletehistoryrecord',
+            type: 'post',
+            dataType: 'json',
+            data: {"movieId":id},
+            success:function(result){
+                if (result.Status){
+                    the.parent().parent().remove()
+                    return
+                }
+                alert(result.Msg)
+            }
+        })
+    }); 
+// 三级导航消息查看 
+    $(".msg li").click(function(){
+        $(".msg li").removeClass('active')
+        $(this).addClass('active')
+        if($(this).attr("value") == 1 ){
+            console.log(123)
+            $("#minemsg").removeClass('hidden')
+            $(".sysmsg").addClass('hidden')
+        }else {
+            console.log(123234)
+            $("#minemsg").addClass('hidden')
+            $(".sysmsg").removeClass('hidden')
+        }
+    });
+// 
+// 
+//  三级导航提意见
+    $("#advise li").click(function(){
+        $("#advise li").removeClass('active')
+        $(this).addClass('active')
+        if($(this).attr("value") == 1 ){
+            $("#myadvise").removeClass('hidden')
+            $(".opiniton").addClass('hidden')
+        }else {
+            $("#myadvise").addClass('hidden')
+            $(".opiniton").removeClass('hidden')
+        }
+    });
+    
 </script>
 </body>
 </html>

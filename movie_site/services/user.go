@@ -175,6 +175,7 @@ func FindLikeMovieByUid(userId string,page int)(resp MovieResp){
 	GetMovieImgUrl(m)
 	resp.Object = m
 	resp.Status = true
+	resp.Page = page
 	if !resp.Next {
 		resp.Page = 0
 	}
@@ -202,12 +203,68 @@ func FineMyReviewByUid(userId string,page int)(resp MovieResp) {
 	}
 	resp.Object = r
 	resp.Status = true
+	resp.Page = page
 	if !resp.Next {
 		resp.Page = 0
 	}
 	return
 }
-
+//更新基础信息
+func UpdatePersonBaseMsg(condition string,paras []string,uid string)(resp MsgResponse){
+	resp.Status = false
+	err := models.PersonBaseMsg(condition,paras,uid)
+	if err != nil {
+		if err.Error() == "参数全部为空不执行修改"{
+			resp.Msg = "没有信息发送变化！"
+			return
+		}
+		resp.Msg = err.Error()
+		return
+	}
+	resetUser(uid)
+	resp.Status = true
+	return
+}
+//我的公告
+func UpdateMyNotice(uid,notice string)(resp MsgResponse){
+	resp.Status = false
+	err  := models.UpdateMyNotice(uid,notice)
+	if err != nil {
+		resp.Msg = err.Error()
+		return
+	}
+	resetUser(uid)
+	resp.Status = true
+	return resp
+}
+//更新密码
+func UpdateMyPassword(uid,password ,OldPassword string)(resp MsgResponse){
+	resp.Status = false
+	user :=models.CheckPwdAndUid(models.User{Uid:uid,Password:OldPassword})
+	if user  == nil {
+		resp.Msg = "原密码错误"
+		return
+	}
+	err := models.ChangePassword(uid,password)
+	if err != nil {
+		resp.Msg = err.Error()
+		return
+	}
+	resp.Status = true
+	return
+}
+//更新头像
+func UpdateImg(uid,imgname string)(resp MsgResponse){
+	resp.Status = false
+	err := models.UpdateMyImg(uid,imgname)
+	if err != nil {
+		resp.Msg = "更新头像失败"
+		return
+	}
+	resetUser(uid)
+	resp.Status = true
+	return
+}
 //分页方法
 func pagination(resp *MovieResp,pages,count,page,pageSize int)(bool){
 	if page < pages {
@@ -222,4 +279,14 @@ func pagination(resp *MovieResp,pages,count,page,pageSize int)(bool){
 		return b
 	}
 	return true
+}
+//重置用户的状态
+func resetUser(uid string){
+	user := models.GetUserByUid(uid)
+	user.ImgHead = util.Person_img + user.ImgHead
+	b ,_ := json.Marshal(&user)
+	//登录成功的用户添加到缓存区域
+	if util.Re == nil{
+		util.RedisPut(util.Rc,util.BaseKeyName+user.Uid,b,24*time.Hour)
+	}
 }

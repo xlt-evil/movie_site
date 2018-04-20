@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"zcm_tools/orm"
+	"github.com/pkg/errors"
 )
 
 //用户表
@@ -32,7 +33,7 @@ type PersonFilm struct { //个人对电影表
 }
 //添加账户
 func AddUser(u User) error {
-	sql := `INSERT INTO user (uid,password,question,answer) VALUES(?,?,?,?)`
+	sql := `INSERT INTO user (uid,password,question,answer,register_time) VALUES(?,?,?,?,NOW())`
 	o := orm.NewOrm()
 	_, err := o.Raw(sql, u.Uid, u.Password, u.Question, u.Answer).Exec()
 	return err
@@ -98,7 +99,7 @@ func FindLikeMovie(userId string,pageIndex,pageSize int)(m []Movie,err error){
 				per_to_film pf
 			LEFT JOIN movie m ON pf.movie_id = m.id
 			WHERE
-			pf.user_id = ?
+			pf.user_id = ? AND pf.collect = 'true'
 			LIMIT ?,?`
 	o := orm.NewOrm()
 	_,err = o.Raw(sql,userId,pageIndex,pageSize).QueryRows(&m)
@@ -149,3 +150,48 @@ func GetMyReviewCount(uid string)( count int,err error){
 	err = o.Raw(sql,uid).QueryRow(&count)
 	return
 }
+
+//个人基本信息修改
+func PersonBaseMsg(condition string ,paras []string,uid string)(err error){
+	sql := `UPDATE user SET `
+	if condition != "" {
+		sql += condition
+		sql += " WHERE uid = ?"
+	}else {
+		return errors.New("参数全部为空不执行修改")
+	}
+	_,err = orm.NewOrm().Raw(sql,paras,uid).Exec()
+	fmt.Println(sql,paras,uid)
+	//重置缓存
+	return
+}
+
+func GetUserByUid(uid string)(user *User){
+	sql := `SELECT * FROM user WHERE uid = ? `
+	o := orm.NewOrm()
+	o.Raw(sql, uid).QueryRow(&user)
+	return
+}
+
+//更新密码
+func ChangePassword(uid,password string)(err error){
+	sql := `UPDATE user SET password = ?
+			WHERE uid = ?`
+	_,err = orm.NewOrm().Raw(sql,password,uid).Exec()
+	return
+}
+//更新公告
+func UpdateMyNotice(uid,notice string)(err error){
+	sql := `UPDATE user SET person_notice = ?
+			WHERE uid = ?`
+	_,err = orm.NewOrm().Raw(sql,notice,uid).Exec()
+	return
+}
+//更新头像
+func UpdateMyImg(uid,imgname string)(err error){
+	sql := `UPDATE user SET img_head = ?
+			WHERE uid = ?`
+	_,err = orm.NewOrm().Raw(sql,imgname,uid).Exec()
+	return
+}
+

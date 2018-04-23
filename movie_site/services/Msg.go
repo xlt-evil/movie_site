@@ -5,6 +5,7 @@ import (
 	"SB/movie_site/models"
 )
 
+//查询官方消息
 func FindOfficalMsg(page int )(resp MovieResp){
 	resp.Status = false
 	pageIndex := util.PageIndex(page,util.OfficalSize)

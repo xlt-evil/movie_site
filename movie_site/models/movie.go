@@ -210,3 +210,18 @@ func FindMovieId(movieId int)(id int,err error){
 	err = o.Raw(sql,movieId).QueryRow(&id)
 	return
 }
+//查看电影总数
+func CountMovie()(count int,err error){
+	sql := `SELECT COUNT(1)	FROM movie`
+	err = orm.NewOrm().Raw(sql).QueryRow(&count)
+	return
+}
+
+//随机推荐
+func FindMovieByIds(id int)(m Movie,err error){
+	sql := `SELECT movie_name FROM movie m
+			LEFT JOIN movie_attribute ma ON ma.movie_id = m.id
+			WHERE m.id = ?`
+	err = orm.NewOrm().Raw(sql,id).QueryRow(&m)
+	return
+}

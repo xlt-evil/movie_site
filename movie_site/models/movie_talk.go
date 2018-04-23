@@ -85,6 +85,16 @@ type FrTalkShow struct {
 	Content string
 }
 
+//个人中心影评展示
+type UserCenterReview struct {
+	Id      int    `description:"影评id"`
+	Content string `description:"内容"`
+	Date    string `description:"日期"`
+	Name    string `description:"昵称"`
+	ImgHead string `description:"头像"`
+	Title   string `description:"标题"`
+}
+
 //找到该电影的所有短评
 func FindMovieTalk(movieId, pageIndex, PageSize int) (mt []MovieTalk, err error) {
 	sql := `SELECT
@@ -248,7 +258,7 @@ func InsertFrTalk(fr_id, movie_id int, user_id, content string) (err error) {
 	sql := `INSERT INTO fr_talk (fr_id,movie_id,user_id,content,date) VALUES (?,?,?,?,NOW())`
 	o := orm.NewOrm()
 	_, err = o.Raw(sql, fr_id, movie_id, user_id, content).Exec()
-	fmt.Println(sql,fr_id,movie_id,user_id,content)
+	fmt.Println(sql, fr_id, movie_id, user_id, content)
 	return
 }
 
@@ -261,7 +271,7 @@ func CountFrTalk(fr_id int) (count int, err error) {
 }
 
 //影评评论分页
-func FindFrTalkByFrid(fr_id, pageIndex, pageSize int)(list []FrTalkShow,err error){
+func FindFrTalkByFrid(fr_id, pageIndex, pageSize int) (list []FrTalkShow, err error) {
 	sql := `SELECT
  			u.name,pf.score,fa.date,u.img_head,fa.content
 			FROM fr_talk fa
@@ -271,17 +281,37 @@ func FindFrTalkByFrid(fr_id, pageIndex, pageSize int)(list []FrTalkShow,err erro
 			ORDER by fa.date desc
 			LIMIT ?,?`
 	o := orm.NewOrm()
-	_,err =  o.Raw(sql,fr_id,pageIndex,pageSize).QueryRows(&list)
+	_, err = o.Raw(sql, fr_id, pageIndex, pageSize).QueryRows(&list)
 	return
 }
 
 //增加到影评评论属性
-func UpdateReviewNum(fr_id int,count int )(err error){
+func UpdateReviewNum(fr_id int, count int) (err error) {
 	sql := `UPDATE fr_attribute fr SET fr.talk_num = ?
 			WHERE fr_id = ?`
 	o := orm.NewOrm()
-	_,err = o.Raw(sql,count,fr_id).Exec()
+	_, err = o.Raw(sql, count, fr_id).Exec()
 	return
 }
 
+//找到该用户的所有评论
+func FindReviewByUid(uid string, pageIndex, pageSize int)(r []UserCenterReview,err error){
+	sql := `SELECT fr.id,ft.content,ft.date,u.name,u.img_head,fr.title FROM film_review fr
+			RIGHT  JOIN fr_talk ft ON fr.id = ft.fr_id
+			LEFT JOIN user u ON u.uid = ft.user_id
+			WHERE fr.user_id = ?
+			ORDER BY date DESC
+			LIMIT ?,?`
+	_,err = orm.NewOrm().Raw(sql, uid, pageIndex, pageSize).QueryRows(&r)
+	return
+}
 
+//找到该用户的所有评论总条数
+func FindReviewByUidCount(uid string)(count int,err error){
+	sql := `SELECT count(1) FROM film_review fr
+			RIGHT  JOIN fr_talk ft ON fr.id = ft.fr_id
+			LEFT JOIN user u ON u.uid = ft.user_id
+			WHERE fr.user_id = ?`
+	err = orm.NewOrm().Raw(sql,uid).QueryRow(&count)
+	return
+}

@@ -4,6 +4,7 @@ import (
 	"SB/movie_site/services"
 	"SB/movie_site/models"
 	"fmt"
+	"time"
 )
 
 type UserController struct {
@@ -17,9 +18,20 @@ func (this *UserController)ToPerson(){
 	resp := services.FindLikeMovieByUid(this.User.Uid,1)//收藏电影
 	resp1 := services.FineMyReviewByUid(this.User.Uid,1)//影评
 	resp2 := services.GetUserHistoryRecord(this.User.Uid,1)//观看记录
+	resp3 := services.MyAdviseList(this.User.Uid,1)//我的意见
+	resp4 := services.ElesPerToMyReview(this.User.Uid,1)//别人对我影评评论
+	times ,_:= models.HistoryRecordCount(this.User.Uid)//看过的电影
+	birthday,_ := models.GetBirthdayByUid(this.User.Uid)
+	s ,_:= time.Parse("2006-01-02",birthday)
+	realbirth := s.Format("01-02")
+	fmt.Println("xiuxiuxiu",times,"   7897977797",birthday," suhfnkdnjcdklsnf",realbirth)
 	this.Data["movie"] = resp
 	this.Data["review"] = resp1
 	this.Data["history"] = resp2
+	this.Data["advise"] = resp3
+	this.Data["talk"] = resp4
+	this.Data["time"] = times
+	this.Data["birthday"] = realbirth
 	this.TplName = "person.html"
 }
 //个人电影收藏
@@ -350,6 +362,52 @@ func (this *UserController)DeleteHistoryRecord(){
 		return
 	}
 	resp = services.DeleteMyHistory(this.User.Uid,movieId)
+	return
+}
+//提意见
+func (this *UserController)Myadvise(){
+	var resp services.MsgResponse
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	title := this.GetString("title")
+	content := this.GetString("content")
+	types := this.GetString("type")
+	resp = services.MyAdvise(this.User.Uid,title,content,types)
+	return
+}
+//查看意见
+func (this *UserController)CheckAdvise(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	page,err := this.GetInt("page")
+	if err != nil {
+		resp.Msg = "解析参数错误"
+		return
+	}
+	resp = services.MyAdviseList(this.User.Uid,page)
+	return
+}
+//查看个人对我的评论
+func (this *UserController)ELsePerToMyReview(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	page,err := this.GetInt("page")
+	if err != nil {
+		resp.Msg = "解析参数错误"
+		return
+	}
+	resp = services.ElesPerToMyReview(this.User.Uid,page)
 	return
 }
 

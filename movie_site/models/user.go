@@ -195,3 +195,11 @@ func UpdateMyImg(uid,imgname string)(err error){
 	return
 }
 
+//找到生日
+func GetBirthdayByUid(uid string)(birthday string,err error){
+	sql := `SELECT birthday FROM user WHERE uid = ?`
+	err = orm.NewOrm().Raw(sql,uid).QueryRow(&birthday)
+	return
+}
+
+

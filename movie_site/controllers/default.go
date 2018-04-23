@@ -45,9 +45,12 @@ func (this *MainController)ToMovieLibrary(){
 	resp := services.FindAreaMenu()
 	resp1 := services.FindTypeMenu()
 	resp2 := services.MovieLibrary()
+	resp3 := services.RandMovie()//电影随机推荐
+	fmt.Println(resp3)
 	this.Data["resp"] = resp
 	this.Data["resp1"] = resp1
 	this.Data["resp2"] = resp2
+	this.Data["randmovie"] = resp3
 	this.TplName = "movielibrary.html"
 }
 //电影介绍页面

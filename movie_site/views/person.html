@@ -216,6 +216,7 @@
 
     <div class="col-sm-8" style="background-color: white;: #f4f5f7;padding-left: 0px;padding-right: 0px;">
         <div class="content">
+
             <div id="page-1" class="ps">
                 <h2 class="col-sm-12" style="margin-bottom: 2%">电影收藏</h2>
                 <div class="col-sm-12" id="mymovie">
@@ -274,7 +275,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" >出生日期</label>
                                 <div class="col-sm-4">
-                                    <input type="date" name="" value="2018-12-12" class="form-control" id="birth">
+                                    <input type="date" name="" value="" class="form-control" id="birth">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -363,19 +364,25 @@
                     <li value="2"><a href="#" >系统通知</a></li>
                 </ul>
                 <hr class="col-sm-11">
-                <div class="row mtb2 pl0 pr0" id="minemsg">
-                    <div class="col-sm-2 " style="padding-left: 4%">
-                        <img src="1.jpg" class="img-responsive img-circle">
-                    </div>
-                    <div class="col-sm-8" style="">
-                        <p class="col-sm-12 lead ">
-                            name <small class="small">&nbsp;2018年7月5日23：59:59</small>
-                        </p>
-                        <p class="col-sm-11 " style="word-wrap:break-word;word-break:break-all;">content</p>
-                        <a href="" class="col-sm-11 col-sm-offset-1 a" >评论name</a>
-                        <hr class="col-sm-12">
-                    </div>
-                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">加载更多</button>
+                <div id="minemsg">
+                    <div id="msgContent">                 
+                        {{range $index,$t := .talk.Object}}
+                        <div class="row mtb2 pl0 pr0" id="minemsgs">
+                            <div class="col-sm-2 " style="padding-left: 4%">
+                                <img src="{{$t.ImgHead}}" class="img-responsive img-circle">
+                            </div>
+                            <div class="col-sm-8" style="">
+                                <p class="col-sm-12 lead ">
+                                    {{$t.Name}}<small class="small">&nbsp;{{$t.Date}}</small>
+                                </p>
+                                <p class="col-sm-11 " style="word-wrap:break-word;word-break:break-all;">{{$t.Content}}</p>
+                                <a href="/showtalk?id={{$t.Id}}" class="col-sm-11 col-sm-offset-1 a" >{{$t.Title}}</a>
+                                <hr class="col-sm-12">
+                            </div>
+                       </div>
+                        {{end}}
+                    </div>  
+                        <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;" value="{{.talk.Page}}" id="pertomyreview">加载更多</button>
                 </div>
                 <div id="page4-2 " class="hidden sysmsg">
                     <div class="row mtb2 pl0 pr0">
@@ -403,36 +410,39 @@
                 <div class="page-5-1">
 
                     <hr class="col-sm-11" style="margin-left: 10px;">
+                    <div id="myadvises">
                     <div class="col-sm-12" id="myadvise">
+                        {{range $index,$a := .advise.Object}}
                         <div class="panel panel-success">
-                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-heading">{{$a.Title}}</div>
                             <div class="panel-body">
-                                Panel content
+                                {{$a.Content}}
                             </div>
                         </div>
-                          <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">查看更多</button>
-                         <hr class="col-sm-12">
+                        {{end}}
                     </div>
-                 
+                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;" value="{{.advise.Page}}" id="checkadvise">查看更多</button>
+                    <hr class="col-sm-12">
+                    </div>
                 </div>
                 <div class="page-5-2 opiniton hidden">
                     <h3 class="col-sm-12">意见单</h3>
                     <div class="col-sm-12">
                         <form class="form-horizontal">
                             <div class="input-group col-sm-8 col-sm-offset-1 mtb2">
-                                <select class="form-control ">
-                                    <option>资源求取</option>
-                                    <option>网站建设</option>
+                                <select class="form-control" id="adviseselect">
+                                    <option value="resource">资源求取</option>
+                                    <option value="build">网站建设</option>
                                 </select>
                             </div>
                             <div class="input-group col-sm-8 col-sm-offset-1 mtb2">
-                                <input type="text" name="" placeholder="Title" class="form-control" >
+                                <input type="text" name="" placeholder="Title" class="form-control" id="adviseTitle">
                             </div>
                             <div class="input-group col-sm-8 col-sm-offset-1 mtb2" style="margin-bottom: 10px;">
-                                <textarea class="form-control" placeholder="请输入你具体建议或要求..." style="height: 100px;"></textarea>
+                                <textarea class="form-control" placeholder="请输入你具体建议或要求..." style="height: 100px;" id="advisecontent"></textarea>
                             </div>
                         </form>
-                        <button class="btn btn-info col-sm-3 col-sm-offset-3" style="margin-bottom: 10px;">提交</button>
+                        <button class="btn btn-info col-sm-3 col-sm-offset-3" style="margin-bottom: 10px;" id ="adviseUp">提交</button>
                     </div>
                 </div>
             </div>
@@ -448,7 +458,7 @@
     <!-- col-sm-4 pl0 pr0 pull-right -->
     <div class="pull-right" style="width: 32%;">
         <div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
-            <p class="lead" style="margin-top: 20px;">浏览次数：10</p>
+            <p class="lead" style="margin-top: 20px;">观影部数：{{.time}} 部</p>
         </div>
         <div class="col-sm-12" style="background-color: white;margin-bottom: 3%;">
             <h5><strong>公告</strong></h5>
@@ -460,8 +470,8 @@
                 <li class="col-sm-7 " ><span class="glyphicon glyphicon-time" style="color: #9bd99f">&nbsp;</span>注册于 {{.user.RegisterTime}}</li>
                 <br>
                 <hr>
-                <li class="col-sm-5 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-bell" style="color: #f9c86d"></span>&nbsp;02-12</li>
-                <li class="col-sm-7 "><span class="glyphicon glyphicon-grain" style="color: #fdaeb1">&nbsp;</span>未填写</li>
+                <li class="col-sm-5 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-bell" style="color: #f9c86d"></span>&nbsp;{{.birthday}}</li>
+                <li class="col-sm-7 "><span class="glyphicon glyphicon-grain" style="color: #fdaeb1">&nbsp;</span>MovieEntral会员</li>
             </ul>
         </div>
     </div>
@@ -755,21 +765,127 @@
             $(".sysmsg").removeClass('hidden')
         }
     });
+// 查看别人回复我的评论
+    $("#pertomyreview").click(function(){
+        var $this = $(this)
+        var page = $this.attr("value")
+        if (page == 0){
+            alert("当前页是最后一页了")
+            return
+        }
+        page = parseInt(page)+1
+        $.ajax({
+            url: '/user/elsepertomyreview',
+            type: 'get',
+            dataType: 'json',
+            data: {"page":page},
+            success:function(result){
+                if (result.Status){
+                    if (result.Object == null){
+                        alert("当前页是最后一页了")
+                        $this.attr("value",0)
+                        return
+                    }
+                    for(var i = 0;i<result.Object.length;i++){
+                        var text = "<div class='row mtb2 pl0 pr0' id='minemsgs'>"+
+                                    "<div class='col-sm-2 ' style='padding-left: 4%'>"+
+                                        "<img src='"+result.Object[i].ImgHead+"' class='img-responsive img-circle'>"+
+                                    "</div>"+
+                                    "<div class='col-sm-8' style=''>"+
+                                    "<p class='col-sm-12 lead '>"+
+                                        result.Object[i].Name+
+                                        "<small class='small'>&nbsp;"+result.Object[i].Date+"</small>"+
+                                    "</p>"+
+                            "<p class='col-sm-11' style='word-wrap:break-word;word-break:break-all;'>"+result.Object[i].Content+"</p>"+
+                            "<a href='/showtalk?id="+result.Object[i].Id+"' class='col-sm-11 col-sm-offset-1 a' >"+result.Object[i].Title+"</a>"+
+                            "<hr class='col-sm-12'>"+
+                        "</div>"+
+                        "</div>"
+                        $("#msgContent").append(text)
+                    }
+                    $this.attr("value",0)
+                }else {
+                    alert(result.Msg)
+                }
+            }
+        })
+    });
 // 
-// 
-//  三级导航提意见
+// 三级导航提意见
     $("#advise li").click(function(){
         $("#advise li").removeClass('active')
         $(this).addClass('active')
         if($(this).attr("value") == 1 ){
-            $("#myadvise").removeClass('hidden')
+            $("#myadvises").removeClass('hidden')
             $(".opiniton").addClass('hidden')
         }else {
-            $("#myadvise").addClass('hidden')
+            $("#myadvises").addClass('hidden')
             $(".opiniton").removeClass('hidden')
         }
     });
-    
+// 提交意见
+    $("#adviseUp").click(function(){
+        var title = $("#adviseTitle").val()
+        if (title == ""){
+            alert("标题不能为空")
+            return
+        }
+        var selected = $("#adviseselect").val()
+        var content = $("#advisecontent").val()
+        if (content == ""){
+            alert("内容不能为空！")
+            return
+        }
+        $.ajax({
+            url: '/user/myadvise',
+            type: 'post',
+            dataType: 'json',
+            data: {"title": title,"type":selected,"content":content},
+            success:function(result){
+                if (result.Status) {
+                    alert("发布成功")
+                    location.reload()
+                    return
+                }
+                alert(result.Msg)
+            }
+        })
+    })
+// 查看意见
+    $("#checkadvise").click(function(){
+        var $this  = $(this)
+        var page = $this.attr("value")
+        if (page == 0){
+            alert("已经是尾页了")
+            return
+        }
+        page = parseInt(page)+1
+        $.ajax({
+            url: '/user/checkadvise',
+            type: 'get',
+            dataType: 'json',
+            data: {"page": page},
+            success:function(result){
+                if (result.Status) {
+                    if (result.Object == null){
+                        alert(已经是尾页了)
+                        $this.attr("value",0)
+                        return
+                    }
+                    for(var i = 0;i<result.Object.length;i++){
+                        var text =  "<div class='panel panel-success'>"+
+                            "<div class='panel-heading'>"+result.Object[i].Title+"</div>"+
+                            "<div class='panel-body'>"+
+                                result.Object[i].Content
+                            "</div>"+
+                        "</div>"
+                        $("#myadvise").append(text)
+                    }
+                     $this.attr("value",result.Page)
+                }
+            }
+        })
+    });
 </script>
 </body>
 </html>

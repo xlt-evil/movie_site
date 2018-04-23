@@ -250,7 +250,7 @@
 		{{end}}
 	    </div>
         <div class="col-lg-3 col-lg-offset-5">
-	    	<button class="btn btn-default col-lg-8 blue" id="blue" click="adkljsf()">查看更多</button>
+	    	<button class="btn btn-default col-lg-8 blue go" id="blue">查看更多</button>
 	    </div>
 
 	 
@@ -405,17 +405,17 @@
 			
 			<div class="row friend">
         		<div class="col-sm-4 movedown" style="border-bottom:  1px solid #0da54069;"></div>
-        		<div class="col-sm-1 br1">
-        			<a href="">豆瓣电影</a>
+        		<div class="col-sm-1 br1 text-center">
+        			<a href="https://movie.douban.com/">豆瓣电影</a>
         		</div>
-        		<div class="col-sm-1 br1">
-        			<a href="">80s</a>
+        		<div class="col-sm-1 br1 text-center">
+        			<a href="https://www.80s.tw/">80s</a>
         		</div>
-        		<div class="col-sm-1 br1">
-        			<a href="">IMDB</a>
+        		<div class="col-sm-1 br1 text-center">
+        			<a href="https://www.imdb.com/">IMDB</a>
         		</div>
-        		<div class="col-sm-1 ">
-        			<a href="">电影FM</a>
+        		<div class="col-sm-1 text-center">
+        			<a href="http://dianying.fm">电影FM</a>
         		</div>
         		<div class="col-sm-4 movedown" style="border-bottom:  1px solid #0da54069;"></div>
     		</div>
@@ -595,6 +595,10 @@
 		$(document).on('click', '#hotmovie .pointer', function(event) {
 			var movieId = $(this).attr("value")
  			window.location.href = "/movieintrdouce?movieId="+movieId
+		});
+
+		$(".go").click(function(){
+			window.location.href = "/tomovielirbary"
 		});
 	</script>
 </body>

@@ -54,7 +54,7 @@ func HistoryReocrd(uid string,pageIndex,pageSize int)(h []HistoryRecord,err erro
 	return
 }
 
-//统计该电影的观看人数
+//统计该用户的观看电影的次数（相同电影重复看只算一次）
 func HistoryRecordCount(uid string)(count int,err error){
 	sql := `SELECT count(1) FROM history_record WHERE uid = ?`
 	err = orm.NewOrm().Raw(sql,uid).QueryRow(&count)

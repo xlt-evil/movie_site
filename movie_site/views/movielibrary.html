@@ -224,16 +224,13 @@
 			<div class="col-sm-3 pull-right clearfix " id="T">
 				<div class="list-group goodview ">
 					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >随机推荐</a>
-					<a href="" class="list-group-item" style="padding-top: 20%;">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item"><small>1</small>123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
+					{{range $index,$r := .randmovie.Object}}
+						{{if eq $index 0}}
+							<a href="" class="list-group-item" style="padding-top: 20%;">{{$r.MovieName}} <span class="badge">{{$r.Score}}</span></a>
+						{{else}}
+							<a href="" class="list-group-item">{{$r.MovieName}} <span class="badge">{{$r.Score}}</span></a>
+						{{end}}
+					{{end}}
 				</div>
 			</div>
 			<div class="col-sm-9 movielist">

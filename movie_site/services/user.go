@@ -6,6 +6,7 @@ import (
 	"SB/movie_site/util"
 	"encoding/json"
 	"time"
+	"fmt"
 )
 
 //信息返回体
@@ -263,6 +264,77 @@ func UpdateImg(uid,imgname string)(resp MsgResponse){
 	}
 	resetUser(uid)
 	resp.Status = true
+	return
+}
+//提意见
+func MyAdvise(uid,title,content,types string)(resp MsgResponse){
+	resp.Status = false
+	a := models.Advise{Uid:uid,Content:content,Title:title,Role:types}
+	err := models.InsertAdvise(a)
+	if err != nil {
+		resp.Msg = "发布信息失败"
+		return
+	}
+	resp.Status = true
+	return
+}
+//我的意见
+func MyAdviseList(uid string , page int)(resp MovieResp){
+	resp.Status = false
+	pageIndex := util.PageIndex(page,util.UserCenterSize)
+	a,err := models.FindAdviseList(uid,pageIndex,util.UserCenterSize)
+	if err != nil {
+		resp.Msg = "查询意见失败"
+		fmt.Println(err.Error())
+		return
+	}
+	count,err := models.FindAdviseCount(uid)
+	if err != nil {
+		resp.Msg = "查询总条数失败"
+		return
+	}
+	pages := util.PageNum(count,util.UserCenterSize)
+	ok :=pagination(&resp,pages,count,page,util.UserCenterSize)
+	if !ok {
+		return
+	}
+	resp.Object = a
+	resp.Status = true
+	resp.Page = page
+	if !resp.Next {
+		resp.Page = 0
+	}
+	return
+
+}
+//别人对我影评发表建议
+func ElesPerToMyReview(uid string,page int)(resp MovieResp){
+	resp.Status = false
+	pageIndex := util.PageIndex(page,util.UserCenterSize)
+	m,err  := models. FindReviewByUid(uid,pageIndex,util.UserCenterSize)
+	if err != nil {
+		resp.Msg = err.Error()
+		return
+	}
+	count,err := models.FindReviewByUidCount(uid)
+	if err != nil {
+		resp.Msg = "查询总条数失败"
+		return
+	}
+	pages := util.PageNum(count,util.UserCenterSize)
+	ok :=pagination(&resp,pages,count,page,util.UserCenterSize)
+	if !ok {
+		return
+	}
+	for i,_ := range m {
+		m[i].ImgHead = util.Person_img+m[i].ImgHead
+	}
+	resp.Object = m
+	resp.Status = true
+	resp.Page = page
+	if !resp.Next {
+		resp.Page = 0
+	}
 	return
 }
 //分页方法

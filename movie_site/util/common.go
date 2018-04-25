@@ -35,19 +35,18 @@ func RandomId(length int)(ids []int){
 		num := r.Intn(length)
 
 		for ;DistinceNum(num,ids);{//不能有重复的id
-		fmt.Println("+++++++++")
 			num = r.Intn(length)
 		}
 		ids = append(ids,num)
 	}
-	fmt.Println(ids)
+	fmt.Println("ids ",ids)
 	return ids
 }
 
 //查看是否重复的数字
 func DistinceNum(num int,id []int)(ok bool){
 	for i,_ := range id{
-		if id[i] == num {
+		if id[i] == num || num == 0{
 			return !ok
 		}
 	}

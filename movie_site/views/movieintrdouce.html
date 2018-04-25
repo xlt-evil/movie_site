@@ -245,7 +245,7 @@
 									<td class="col-sm-9">有&nbsp;&nbsp;<a class="btn btn-success" add="{{.movie.Object.SourcePath}}" href="/movieplayer?movieId={{.movie.Object.Id}}">观赏电影!</a></td>
 								{{else}}
 									<td class="col-sm-3 "><strong>片源</strong></td>
-									<td class="col-sm-9">无&nbsp;&nbsp;<button class="btn btn-info">上传资源？</button></td>
+									<td class="col-sm-9">无&nbsp;&nbsp;<button class="btn btn-info disabled">努力寻找资源中....</button></td>
 								{{end}}
 							</tr>
 							<tr>
@@ -281,15 +281,18 @@
 				<div class="col-sm-3">
 					<div class="list-group goodview ">
 					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >相关影评</a>
-					<a href="" class="list-group-item" style="padding-top: 20%;">
-						<p class="text-left">author:<small>123</small></p>
-					</a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<button class="list-group-item btn-info text-center"><p class="text-center">CheckMore</p></button>
+					{{if .review.Status }}
+					{{range $index,$r := .review.Object}}
+						{{if eq $index 0}}
+							<a href="/showtalk?id={{$r.Id}}" class="list-group-item text-center" style="padding-top: 20%;">{{$r.Title}}</a>
+						{{else}}
+							<a href="/showtalk?id={{$r.Id}}" class="list-group-item text-center">{{$r.Title}}</a>
+						{{end}}
+					{{end}}
+					{{else}}
+							<a href="#" class="list-group-item text-center" style="padding-top: 20%;">还没有该电影的影评哦！</a>
+					{{end}}
+					<button class="list-group-item btn-info text-center" id="towrite"><p class="text-center">write your mind</p></button>
 				</div>
 				</div>
 			</div>
@@ -773,6 +776,10 @@
 			}
 			window.location.href = "/user/filmcritic?movieId="+movieId
 		
+		});
+
+		$("#towrite").click(function(){
+			$("#filewrite").click();
 		});
 	</script>
 </body>

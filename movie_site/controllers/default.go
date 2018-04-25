@@ -36,8 +36,12 @@ func (this *MainController)Get(){
 	key := make([]string,2)
 	key[0] = "日本"
 	key[1] = "韩国"
-	resp :=services.FindMovieListByIndex(key)
+	resp := services.FindMovieListByIndex(key)
+	resp1 := services.IndexOffical()
+	resp2 := services.IndexReview()
 	this.Data["movies"] = resp
+	this.Data["offical"] = resp1
+	this.Data["review"] = resp2
 	this.TplName = "index.html"
 }
 //电影库
@@ -46,11 +50,14 @@ func (this *MainController)ToMovieLibrary(){
 	resp1 := services.FindTypeMenu()
 	resp2 := services.MovieLibrary()
 	resp3 := services.RandMovie()//电影随机推荐
+	resp4 := services.HotMovie()//热门电影推荐
+	fmt.Println("asdjkldmj;kadsmffjdnj",resp4.Object)
 	fmt.Println(resp3)
 	this.Data["resp"] = resp
 	this.Data["resp1"] = resp1
 	this.Data["resp2"] = resp2
 	this.Data["randmovie"] = resp3
+	this.Data["hotmovie"] = resp4
 	this.TplName = "movielibrary.html"
 }
 //电影介绍页面
@@ -59,6 +66,7 @@ func (this *MainController)MovieIntroduce(){
 	resp := services.FindMovie(id)
 	resp1 := services.FindMovieAttribute(id)
 	movieTalk := services.MovieTalkAjax(id,1)
+	review := services.RelatedReview(id)
 	if this.User == nil {
 		this.Data["person"] = models.PersonFilm{Collect:"false",Score:0}
 	}else{
@@ -71,6 +79,7 @@ func (this *MainController)MovieIntroduce(){
 	this.Data["movie"] = resp
 	this.Data["attribute"] = resp1
 	this.Data["talk"] = movieTalk
+	this.Data["review"] = review
 	this.TplName = "movieintrdouce.html"
 }
 //电影放映厅
@@ -105,7 +114,7 @@ func(this *MainController)FilmReview(){
 func (this *MainController)ShowTalk(){
 	id,err:= this.GetInt("id")
 	if err != nil {
-		this.Abort("404")
+		this.Abort("404")//停止跳到404
 	}
 	resp := services.TalkDetail(id)
 	this.Data["talks"] = resp.Object

@@ -24,7 +24,6 @@ func (this *UserController)ToPerson(){
 	birthday,_ := models.GetBirthdayByUid(this.User.Uid)
 	s ,_:= time.Parse("2006-01-02",birthday)
 	realbirth := s.Format("01-02")
-	fmt.Println("xiuxiuxiu",times,"   7897977797",birthday," suhfnkdnjcdklsnf",realbirth)
 	this.Data["movie"] = resp
 	this.Data["review"] = resp1
 	this.Data["history"] = resp2

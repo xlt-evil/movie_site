@@ -46,7 +46,7 @@ type Type struct {
 	Id int
 	Name string
 }
-
+//根据id找到电影
 func FindMovieById(id int) (m Movie, err error) {
 	sql := `SELECT * FROM movie WHERE id = ?`
 	o := orm.NewOrm()
@@ -55,14 +55,13 @@ func FindMovieById(id int) (m Movie, err error) {
 	m.SourcePath = util.Source_path+m.SourcePath
 	return
 }
-
+//找到电影的属性
 func FindMovieAttribute(id int) (attribute MoiveAttribute, err error) {
 	sql := `SELECT * FROM movie_attribute WHERE movie_id = ?`
 	o := orm.NewOrm()
 	err = o.Raw(sql, id).QueryRow(&attribute)
 	return
 }
-
 //首页热门电影 因为要加载到缓存所以单独写
 func FindMovieListByIndex(key []string)(movies []Movie,err error){
 	sql := `SELECT
@@ -216,12 +215,28 @@ func CountMovie()(count int,err error){
 	err = orm.NewOrm().Raw(sql).QueryRow(&count)
 	return
 }
-
 //随机推荐
 func FindMovieByIds(id int)(m Movie,err error){
-	sql := `SELECT movie_name FROM movie m
+	sql := `SELECT movie_name,ma.score,m.id FROM movie m
 			LEFT JOIN movie_attribute ma ON ma.movie_id = m.id
 			WHERE m.id = ?`
 	err = orm.NewOrm().Raw(sql,id).QueryRow(&m)
+	return
+}
+//热门电影
+func HotMovie()(m []Movie,err error){
+	sql := `SELECT movie_name,ma.score,m.id FROM movie m
+			LEFT JOIN movie_attribute ma ON ma.movie_id = m.id
+			ORDER BY ma.popularity DESC
+			LIMIT 0,8`
+	_,err = orm.NewOrm().Raw(sql).QueryRows(&m)
+	return
+
+}
+//真假电影人气
+func UpPopularity(id int)(err error){
+	sql := `UPDATE movie_attribute SET popularity = popularity+1
+			WHERE movie_id = ?`
+	_,err = orm.NewOrm().Raw(sql,id).Exec()
 	return
 }

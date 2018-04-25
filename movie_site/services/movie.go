@@ -15,6 +15,12 @@ func FindMovie(id int)(resp MsgResponse){
 		resp.Msg = "资源出现问题，请稍后重试"
 		return
 	}
+	//增加电影热度
+	err = models.UpPopularity(id)
+	if err != nil {
+		resp.Msg = "电影热度增加失败"
+		return
+	}
 	resp.Status = true
 	resp.Object = m
 	return

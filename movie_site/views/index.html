@@ -261,7 +261,7 @@
 		   <h1 class="text-left">热门影评</h1>
 	    <hr>
     	<div class="row">
-        	<div class="col-xs-4 col-lg-4">
+      <!--   	<div class="col-xs-4 col-lg-4">
         		<div class="thumbnail">
         			<img src="../static/img/4.jpg">
 	        		<div class="caption">
@@ -270,60 +270,22 @@
         				<p class="" style="text-indent: 10%;">内容...</p>
         			</div>
 	        	</div>
-        	</div>
-        	<div class="col-xs-4 col-lg-4">
-        		<div class="media">
-	    			<div class="media-body">
-						<h4 class="media-class">Media</h4>
-						<p>
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-						</p>
-						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
-					</div>
-					<a href="" class="media-right media-middle">
-    					<img src="../static/img/1.jpg" height="120px;" >
-					</a>
-    			</div>
-
-				<div class="media">
-	    			<div class="media-body">
-						<h4 class="media-class">Media</h4>
-						<p>
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-						</p>
-						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
-					</div>
-					<a href="" class="media-right media-middle">
-    					<img src="../static/img/1.jpg" height="120px;" >
-					</a>
-    			</div>	
-    			<div class="media">
-	    			<div class="media-body">
-						<h4 class="media-class">Media</h4>
-						<p>
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-							ewdijedrjiqoirjdoiqwdjoqijoidjqwoidjqdiw
-						</p>
-						<p><small>作者 name &nbps;评&nbsp; <<\moviename/> </small></p>
-					</div>
-					<a href="" class="media-right media-middle">
-    					<img src="../static/img/1.jpg" height="120px;">
-					</a>
-    			</div>	
+	        	<p>当前时间 :2018-04-03 15:19</p>
+	        	<p>Movie'sEntral</p>
+        	</div> -->
+        	<div class="col-xs-8 col-lg-8" id="MyContent" >
+        		<!-- 影评内容 -->
 			</div>
 			<div class="col-xs-4 col-lg-4">
 				<div class="list-group goodview ">
 					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >本周强推</a>
-					<a href="" class="list-group-item" style="padding-top: 16%;">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-					<a href="" class="list-group-item">123 <span class="badge">42</span></a>
-
+					{{range $index,$r := .review.Object}}
+						{{if eq $index 0}}
+					<a href="/showtalk?id={{$r.Id}}" class="list-group-item" style="padding-top: 16%;">{{$r.Title}} </a>
+						{{else}}
+					<a href="/showtalk?id={{$r.Id}}" class="list-group-item">{{$r.Title}}  </a>
+						{{end}}
+					{{end}}
 				</div>
 			</div>
 	    </div>
@@ -383,17 +345,14 @@
         					<div class="list-group goodview ">
 		
 					<a href="" class="list-group-item  progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="" aria-valuemax="1" style="width: 100%;background-color:#343434;" >官网最新动态</a>
-					<a href="" class="list-group-item" style="padding-top: 16%;">123</a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<a href="" class="list-group-item">123 </a>
-					<button class="list-group-item btn-info text-center"><p class="text-center">CheckMore</p></button>
+					{{range $index,$r := .offical.Object}}
+						{{if eq $index 0}}
+							<a href="#" class="list-group-item disabled" style="padding-top: 16%;background-color: #fff">{{$r.Title}}</a>
+						{{else}}
+							<a href="#" class="list-group-item disabled" style="background-color: #fff">{{$r.Title}}</a>
+						{{end}}
+					{{end}}
+					<button class="list-group-item btn-info text-center" id="gonews"><p class="text-center">CheckMore</p></button>
 				</div>
 			</div>
 			</div>
@@ -599,6 +558,52 @@
 
 		$(".go").click(function(){
 			window.location.href = "/tomovielirbary"
+		});
+
+		$("#gonews").click(function(){
+			window.location.href = "/news"
+		});
+
+		function first(){
+			$.ajax({
+				url: '/indexreview',
+				type: 'get',
+				dataType: 'json',
+				success:function(result){
+					if (result.Status) {
+						var $c = $("#MyContent")
+						for(var i = 0;i<result.Object.length;i++){
+							var text = "<div class='media'>"+
+	    									"<div class='media-body'>"+
+												"<h4 class='media-class text-center'>"+result.Object[i].Title+"</h4>"+
+												"<div class='black' id=i"+i+">"+result.Object[i].Content+"</div>"+
+												"<p><small>作者 : "+result.Object[i].Name +" 评&nbsp;"+ result.Object[i].MovieName +"</small></p>"+
+											"</div>"+
+											"<a href='/showtalk?id="+result.Object[i].Id+"' class='media-right media-middle'>"+
+    											"<img src="+result.Object[i].ImgHead+" height='120px;' width='150px;' >"+
+											"</a>"+
+    									"</div>"		
+							$c.append(text)
+							$(".black img").remove()
+							var select = "#i"+i+" p"
+							var length = $(select).length
+							var $p = $(select)
+							if (length > 3){
+								for(var j = 2;j<length;j++){
+									$($p.eq(j)).remove()
+								}
+							}
+						}
+					}
+				}
+			})
+		}
+		$(function(){
+			first()
+		})
+
+		$("#green").click(function(){
+			window.location.href = "/filmreview"
 		});
 	</script>
 </body>

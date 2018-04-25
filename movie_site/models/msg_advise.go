@@ -68,3 +68,11 @@ func FindAdviseCount(uid string)(count int ,err error){
 	return
 }
 
+//首页官网查询
+func GetIndexOffical()(list []OfficalMsg,err error){
+	sql := `SELECT title FROM official_msg
+			ORDER BY date DESC
+			LIMIT 0,10`
+	_,err = orm.NewOrm().Raw(sql).QueryRows(&list)
+	return
+}

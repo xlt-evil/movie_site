@@ -153,6 +153,7 @@ func FindFilmReviewList(pageIndex, pageSize int) (fr []FilmReviewList, err error
 				LIMIT ?,? `
 	o := orm.NewOrm()
 	_, err = o.Raw(sql, pageIndex, pageSize).QueryRows(&fr)
+	fmt.Println(fr)
 	return
 }
 
@@ -313,5 +314,44 @@ func FindReviewByUidCount(uid string)(count int,err error){
 			LEFT JOIN user u ON u.uid = ft.user_id
 			WHERE fr.user_id = ?`
 	err = orm.NewOrm().Raw(sql,uid).QueryRow(&count)
+	return
+}
+
+//找打该电影的相关影评
+func FindReviewByMovieId(id int )(f []FilmReview,err error){
+	sql := `SELECT id,title FROM film_review
+			WHERE movie_id = ?
+			LIMIT 0,5`
+	_,err = orm.NewOrm().Raw(sql,id).QueryRows(&f)
+	return
+}
+//找到热门影评
+func FindHotReview()(f []FilmReview,err error){
+	sql := `SELECT fr.id,title FROM film_review fr
+			LEFT JOIN fr_attribute fa ON fr.id = fa.fr_id
+			ORDER BY fa.like DESC
+			LIMIT 0,7`
+	_,err = orm.NewOrm().Raw(sql).QueryRows(&f)
+	return
+}
+
+//电影影评列表
+func FindFilmReviewList2(pageIndex, pageSize int) (fr []FilmReviewList, err error) {
+	sql := `SELECT
+				fr.id,m.movie_img ,u.img_head,m.movie_name,u.NAME name,pf.score,fr.date,fr.content,fr.title,fr.movie_id,fr.user_id,fa.like,fa.hate,fa.talk_num
+			FROM
+				film_review fr
+				LEFT JOIN movie m ON m.id = fr.movie_id
+				LEFT JOIN USER u ON u.uid = fr.user_id
+				LEFT JOIN per_to_film pf ON pf.movie_id = fr.movie_id
+				AND pf.user_id = fr.user_id
+				LEFT JOIN fr_attribute fa ON fa.fr_id = fr.id
+				ORDER BY
+				fa.like DESC,
+				fr.id ASC
+				LIMIT ?,? `
+	o := orm.NewOrm()
+	_, err = o.Raw(sql, pageIndex, pageSize).QueryRows(&fr)
+	fmt.Println(fr[1].Id)
 	return
 }

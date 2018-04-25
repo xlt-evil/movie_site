@@ -4,6 +4,8 @@ import (
 	"github.com/astaxie/beego"
 	"SB/movie_site/services"
 	"fmt"
+	"SB/movie_site/models"
+	"SB/movie_site/util"
 )
 
 type MovieController struct {
@@ -159,5 +161,22 @@ func (this *MainController)ReviewTalk(){
 		return
 	}
 	resp = services.LoadReleaseList(page,frid)
+	return
+}
+
+func (this *MainController)IndexReview(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	m ,_:=models.FindFilmReviewList2(0,3)
+	for i,_ :=range m {
+		m[i].ImgHead = util.Person_img+m[i].ImgHead
+		m[i].MovieImg = util.Movie_img+m[i].MovieImg
+	}
+	resp.Status = true
+	resp.Object = m
 	return
 }

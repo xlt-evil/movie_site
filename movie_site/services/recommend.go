@@ -22,3 +22,55 @@ func RandMovie()(resp MsgResponse){
 	resp.Status = true
 	return
 }
+//热门电影推荐
+func HotMovie()(resp MsgResponse){
+	resp.Status = true
+	m,err := models.HotMovie()
+	if err != nil {
+		resp.Msg = "Bug"
+		return
+	}
+	resp.Object = m
+	resp.Status = true
+	return
+}
+//相关影评
+func RelatedReview(id int)(resp MsgResponse){
+	resp.Status = false
+	f ,err := models.FindReviewByMovieId(id)
+	if err != nil {
+		resp.Msg = "bug"
+		return
+	}
+
+	resp.Object = f
+	resp.Status = true
+	if len(f) == 0 {
+		resp.Status = false
+	}
+ 	return
+}
+//首页电影推荐
+func IndexOffical()(resp MsgResponse){
+	resp.Status = false
+	m ,err := models.GetIndexOffical()
+	if err != nil {
+		resp.Msg = "bug"
+		return
+	}
+	resp.Object = m
+	resp.Status =  true
+	return
+}
+//首页影评推荐
+func IndexReview()(resp MsgResponse){
+	resp.Status = false
+	m ,err := models.FindHotReview()
+	if err != nil {
+		resp.Msg = "bug"
+		return
+	}
+	resp.Object = m
+	resp.Status =  true
+	return
+}

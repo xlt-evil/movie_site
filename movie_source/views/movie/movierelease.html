@@ -1,0 +1,116 @@
+	<div class="pad margin no-print" style="margin:0px;padding: 0px;">
+      <div class="callout bg-teal color-palette" style="margin-bottom: 0!important;border-left: 5px solid #30bbbb;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        When you release the movie, please check carefully whether all the attributes are correct and avoid trouble.
+      </div>
+    </div>	
+
+    <hr>
+
+    <div class="box box-primary box-solid" id="modifybox">
+          <div class="box-header with-border">
+            <h3 class="box-title" >添加电影</h3>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+             <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" >MovieName</label>
+                  <input type="email" class="form-control"  placeholder="..." id="movieName">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">导演</label>
+                  <input type="email" class="form-control"  placeholder="..." id="director">
+                </div>
+
+                <div class="form-group">
+                  <label>地区</label>
+                  <select class="form-control" id="area">
+                    {{range $index,$a := .area}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>电影类型</label>
+                  <select class="form-control" id="type">
+                    {{range $index,$a := .type}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>语言</label>
+                  <select class="form-control" id="language">
+                    {{range $index,$a := .language}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+
+
+                <div class="form-group">
+                  <label>上映时间</label>
+                  <input type="date" name="" class="form-control" id="releasedate">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">剧情</label>
+                  <textarea class="form-control" id="content"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">简介</label>
+                  <textarea class="form-control" id="short"></textarea>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="exampleInputFile">电影图片</label>
+                  <input type="file" id="img">
+                  <p class="help-block">电影的宣传海报. 150*200</p>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputFile">电影资源</label>
+                  <input type="file" id="video">
+                  <p class="help-block">电影资源 .MP4格式</p>
+                </div>
+              </div>
+              <!-- /.box-body -->
+            </form>
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <!-- <button type="button" class="btn btn-success " value="" id="submits">电影上传</button> -->
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-success" id="submits">
+                电影上传
+              </button>
+          </div>
+          <!-- /.box-footer-->
+      </div>
+      
+
+          <div class="modal modal-success fade" id="modal-success" style="display: none;padding-top: 300px;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header hidden">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close">
+                  <span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body">
+                <p class="text-center">正在上传中...</p>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+<script src="../static/js/movie.js"></script>

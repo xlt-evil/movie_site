@@ -1,0 +1,204 @@
+	<div class="pad margin no-print" style="margin:0px;padding: 0px;">
+      <div class="callout bg-navy color-palette" style="margin-bottom: 0!important;border-left: 5px solid #001a35;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        Film management can modify the properties of movies, so please check them carefully.
+      </div>
+    </div>	
+    <hr>
+    <div class="row">
+        <div class=" col-lg-4  col-xs-offset-2">
+	    <!-- small box -->
+	    <div class="small-box bg-red">
+	      <div class="inner">
+	        <h3>{{.t}}</h3>
+	        <p>今日 发布电影</p>
+	      </div>
+	      <div class="icon">
+	        <i class="fa fa-drupal"></i>
+	      </div>
+	      <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+	    </div>
+  	</div>
+
+    <div class="col-lg-4 col-xs-6 col-push-xs-2">
+	    <!-- small box -->
+	    <div class="small-box bg-blue">
+	      <div class="inner">
+	        <h3>{{.c}}</h3>
+	        <p>全部电影</p>
+	      </div>
+	      <div class="icon">
+	        <i class="fa fa-drupal"></i>
+	      </div>
+	      <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+	    </div>
+  	</div>
+  	</div>
+
+    <div >
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">电影列表</h3>
+            <div class="box-tools">
+              <div class="input-group input-group-sm" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default "><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tbody id="moviebody"><tr>
+                <th>ID</th>
+                <th>MovieName</th>
+                <th>Date</th>
+                <th>Modify</th>
+                <th>Upload</th>
+              </tr>
+              {{range $index,$a := .movie.Object}}
+              <tr class="th">
+                <td>{{$a.Id}}</td>
+                <td>{{$a.MovieName}}</td>
+                <td>{{$a.ReleaseDate}}</td>
+                <td><a class="btn btn-social-icon btn-vk update" value={{$a.Id}}><i class="fa  fa-wrench"></i></a></td>
+                {{if eq $a.Source "exist"}}
+                <td><a class="btn btn-social-icon btn-github upmovie disabled" value={{$a.Id}} style="background-color: #4CAF50"><i class="fa  fa-send-o"></i></a></td>
+                {{else }}
+                <td><a class="btn btn-social-icon btn-github upmovie2" value={{$a.Id}} ><i class="fa  fa-send-o"></i></a></td>
+                {{end}}
+              </tr>
+              {{end}}
+            </tbody></table>
+          </div>
+          <!-- /.box-body -->
+          	<div class="box-footer clearfix">
+	          <ul class="pagination pagination-sm no-margin pull-right" id="moviepage">
+	            {{if  .movie.Pref}}
+              <li class="page" id="prev" value=0><a href="#"  ><<</a></li>
+              {{else}}
+              <li class="disabled page" id="prev" value=0><a href="#" ><<</a></li>
+              {{end}}
+              <li class=""><a href="#" id="pages" >{{.movie.Page}}</a></li>
+              {{if  .movie.Next}}
+              <li class="page" id="next" value=1><a href="#"  >>></a></li>
+              {{else}}
+              <li class="disabled page" id="next" value=1><a href="#" >>></a></li>
+              {{end}}
+	          </ul>
+        	</div>
+        </div>
+    </div>
+
+ 		<div class="box box-primary box-solid hidden" id="modifybox">
+	        <div class="box-header with-border">
+	          <h3 class="box-title" >电影修改</h3>
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+	              <i class="fa fa-minus"></i></button>
+	          </div>
+	        </div>
+	        <div class="box-body">
+	        	 <form role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" >MovieName</label>
+                  <input type="email" class="form-control"  placeholder="..." id="movieName">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">导演</label>
+                  <input type="email" class="form-control"  placeholder="..." id="director">
+                </div>
+
+              	<div class="form-group">
+                  <label>地区</label>
+                  <select class="form-control" id="area">
+                    {{range $index,$a := .area}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+
+
+              	<div class="form-group">
+                  <label>电影类型</label>
+                  <select class="form-control" id="type">
+                    {{range $index,$a := .type}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+
+               	<div class="form-group">
+                  <label>语言</label>
+                  <select class="form-control" id="language">
+                    {{range $index,$a := .language}}
+                      <option value="{{$a.Id}}">{{$a.Name}}</option>
+                    {{end}}
+                  </select>
+                </div>
+
+
+              	<div class="form-group">
+                  <label>上映时间</label>
+               	  <input type="date" name="" class="form-control" id="releasedate">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">剧情</label>
+                  <textarea class="form-control" id="content">123</textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">简介</label>
+                  <textarea class="form-control" id="short">123</textarea>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="exampleInputFile">电影图片</label>
+                  <input type="file" id="img">
+                  <p class="help-block">电影的宣传海报. 150*200</p>
+                </div>
+              </div>
+              <!-- /.box-body -->
+            </form>
+	        </div>
+	        <!-- /.box-body -->
+	        <div class="box-footer">
+	        	<button type="submit" class="btn btn-primary pull-right" value="" id="submit">Submit</button>
+	        </div>
+	        <!-- /.box-footer-->
+      </div>
+        
+
+      <div class="col-md-12 hidden" style="margin: 0px;padding: 0px; " id="movieresource">
+          <div class="box box-default box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title"><p style="display: inline-block;" id="name"></p><small>(电影资源上传)</small></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                <i class="fa fa-minus"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form enctype="multipart/form-data" method="post" action="./movieupload">
+              	<input type="file" name="file" >
+                <br>
+                <input type="" name="movieId" value="" class="hidden" id="movieId"> 
+                <input type="submit" name="" class="btn bg-olive margin">
+              </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+<script src="../static/js/movie.js"></script>

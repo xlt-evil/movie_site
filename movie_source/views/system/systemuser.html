@@ -1,0 +1,63 @@
+	<div class="pad margin no-print" style="margin:0px;padding: 0px;">
+      <div class="callout bg-gray color-palette " style="margin-bottom: 0!important;border-left: 5px solid #b5bbc8;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        Any operation will cause any changes to ordinary members. Please do not change at will.
+      </div>
+    </div>
+
+    <hr>
+
+    <div >
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">管理员列表</h3>
+            <div class="box-tools">
+              <div class="input-group input-group-sm" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+       <!-- /.box-header -->
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tbody id="adminbody"><tr>
+                <th>ID</th>
+                <th>NewsTitle</th>
+                <th>Date</th>
+                <th>Forzen</th>
+                <th>Del</th>
+              </tr>
+              {{range $index,$a := .admin.Object}}
+              <tr class="th">
+                <td>{{$a.Id}}</td>
+                <td>{{$a.Uid}}</td>
+                <td>普通管理员</td>
+                <td><a class="btn btn-social-icon btn-google forzen" value={{$a.Id}} type={{$a.Status}}><i class="fa  fa-expeditedssl"></i></a></td>
+                <td><a class="btn btn-social-icon btn-vk del" value={{$a.Id}}><i class="fa fa-close"></i></a></td>
+              </tr>
+              {{end}}
+            </tbody></table>
+          </div>
+          <!-- /.box-body -->
+          	<div class="box-footer clearfix">
+	          <ul class="pagination pagination-sm no-margin pull-right" id="adminpage">
+            {{if  .admin.Pref}}
+              <li class="page" id="prev" value=0><a href="#"  ><<</a></li>
+            {{else}}
+              <li class="disabled page" id="prev" value=0><a href="#" ><<</a></li>
+            {{end}}
+              <li class=""><a href="#" id="pages" >{{.admin.Page}}</a></li>
+            {{if  .admin.Next}}
+              <li class="page" id="next" value=1><a href="#"  >>></a></li>
+            {{else}}
+              <li class="disabled page" id="next" value=1><a href="#" >>></a></li>
+            {{end}}
+	          </ul>
+        	</div>
+        </div>
+    </div>
+    <script src="../static/js/admin.js"></script>

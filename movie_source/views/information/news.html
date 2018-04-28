@@ -1,0 +1,104 @@
+	<div class="pad margin no-print" style="margin:0px;padding: 0px;">
+      <div class="callout callout-info" style="margin-bottom: 0!important;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        The news can't be modified once it is released, please pay attention to the review
+      </div>
+    </div>
+    <!-- 新闻列表 -->
+    <hr>
+      <div >
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">新闻列表</h3>
+            <div class="box-tools">
+              <div class="input-group input-group-sm" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tbody id="newsbody"><tr>
+                <th>ID</th>
+                <th>NewsTitle</th>
+                <th>Date</th>
+                <th>Point</th>
+                <th>Del</th>
+              </tr>
+               {{range $index,$a := .news.Object}}
+              <tr class="th">
+                <td>{{$a.Id}}</td>
+                <td>{{$a.Title}}</td>
+                <td>{{$a.Date}}</td>
+                <td>{{$a.Point}}</td>
+                <td class=""><a class="btn btn-social-icon btn-vk del" value={{$a.Id}}><i class="fa fa-close"></i></a></td>
+              </tr>
+              {{end}}
+            </tbody></table>
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer clearfix">
+          <ul class="pagination pagination-sm no-margin pull-right" id="newspage">
+           {{if  .news.Pref}}
+              <li class="page" id="prev" value=0><a href="#"  ><<</a></li>
+          {{else}}
+              <li class="disabled page" id="prev" value=0><a href="#" ><<</a></li>
+          {{end}}
+              <li class=""><a href="#" id="pages" >{{.news.Page}}</a></li>
+          {{if  .news.Next}}
+              <li class="page" id="next" value=1><a href="#"  >>></a></li>
+          {{else}}
+              <li class="disabled page" id="next" value=1><a href="#" >>></a></li>
+          {{end}}
+          </ul>
+        </div>
+        </div>
+        <!-- /.box -->
+        <h3> 发布新闻<i class="fa  fa-paint-brush"></i></h3>
+        <!-- 新闻基础信息 -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">新闻基础信息</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-xs-3">
+                  <input type="text" class="form-control" placeholder="Title" id="title">
+                </div>
+                <div class="col-xs-4">
+                  <input type="text" class="form-control" placeholder="point..." id="point">
+                </div>
+                <div class="col-xs-5" style="border:0px;">
+
+                  <input type="file" class="form-control" placeholder="请选择新闻置顶图片" id="upload"
+                   style="border:0px;outline: 0px;">
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+    </div>
+    <div class="col-md-12" style="margin: 0px;padding: 0px;">
+      	<div class="box box-default collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">新闻具体内容</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body" style="display: none;">
+              <textarea class="textarea col-sm-12" ></textarea>
+            </div>
+            <div class="box-footer ">
+            	<button type="button" class="btn bg-navy margin pull-right" id="save">提交</button>
+            </div>
+        </div>
+    </div>
+
+<script src="../static/js/news.js"></script>

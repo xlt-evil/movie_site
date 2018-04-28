@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>上传成功</title>
+	<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			console.log(123)
+	      	setTimeout(ChangeTime, 1000);
+
+	    });
+	    function ChangeTime(){
+	        console.log("dsa")
+	    	var time ;
+	    	time = $("#time").text();
+	    	console.log(time)
+	      	time = parseInt(time);
+	      	time--;
+	      	if(time <= 0){
+	      		window.location.href ="/movie/moviemanage"
+	      	}else {
+	      	    $("#time").text(time)
+	      		setTimeout(ChangeTime, 1000);
+	      	}
+	    }
+	</script>
+</head>
+<body>
+	<h3 style="display: inline-block">上传成功</h3><h1 id="time" style="display: inline-block">5</h1><small style="display: inline-block">秒后跳转....</small>
+</body>
+</html>

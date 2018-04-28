@@ -1,0 +1,186 @@
+  <div class="pad margin no-print" style="margin:0px;padding: 0px;">
+      <div class="callout bg-red color-palette " style="margin-bottom: 0!important;border-left: 5px solid #d33724;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        A module that interacts with the user of the system
+      </div>
+    </div>
+
+<hr>
+
+<div class="col-lg-4 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-yellow">
+      <div class="inner">
+        <h3>{{ .count0 }}</h3>
+        <p>今日 注册人数</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-person-add"></i>
+      </div>
+      <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+    </div>
+  </div>
+  <div class="col-lg-4 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-aqua">
+      <div class="inner">
+        <h3>{{.count1}}</h3>
+        <p>昨日 注册人数</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-person-add"></i>
+      </div>
+      <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+    </div>
+  </div>
+  <div class="col-lg-4 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3>{{.count2}}</h3>
+        <p>总注册人数</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-person-add"></i>
+      </div>
+      <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+    </div>
+  </div>
+
+  <!-- 用户的建议 -->
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs pull-right">
+        <li class="active"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">网站建设</a></li>
+        <li class=""><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">资源求取</a></li>
+        <li class="pull-left header"><i class="fa fa-th"></i> 用户建议</li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_1-1">
+          <div>
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">User List</h3>
+                <div class="box-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                  <tbody id="buildbody">
+                    <tr>
+                      <th>ID</th>
+                      <th>User</th>
+                      <th>Date</th>
+                      <th>Title</th>
+                      <th>Status</th>
+                    </tr>
+                    {{range $index,$a := .advise.Object}}
+                    <tr class="th">
+                      <td>{{$a.Id}}</td>
+                      <td>{{$a.Uid}}</td>
+                      <td>{{$a.AdviseDate}}</td>
+                      <td>{{$a.Title}}</td>
+                      <td class="" ><span class="label label-success pointer checks" value="{{$a.Id}}">查看</span></td>
+                    </tr>
+                    {{end}}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right " id="buildpage">
+                  {{if  .advise.Pref}}
+                  <li class="page" id="prev" value=0><a href="#"  ><<</a></li>
+                  {{else}}
+                  <li class="disabled page" id="prev" value=0><a href="#" ><<</a></li>
+                  {{end}}
+                  <li class=""><a href="#" id="pages" >{{.advise.Page}}</a></li>
+                  {{if  .advise.Next}}
+                   <li class="page" id="next" value=1><a href="#"  >>></a></li>
+                  {{else}}
+                    <li class="disabled page" id="next" value=1><a href="#" >>></a></li>
+                  {{end}}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab_2-2">
+                   <div>
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">User List</h3>
+                <div class="box-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                  <tbody id="resourcebody">
+                    <tr>
+                      <th>ID</th>
+                      <th>User</th>
+                      <th>Date</th>
+                      <th>Title</th>
+                      <th>Status</th>
+                    </tr>
+                    {{range $index,$a := .resource.Object}}
+                    <tr class="th1">
+                      <td>{{$a.Id}}</td>
+                      <td>{{$a.Uid}}</td>
+                      <td>{{$a.AdviseDate}}</td>
+                      <td>{{$a.Title}}</td>
+                      <td class="" ><span class="label label-success pointer checks" value="{{$a.Id}}">查看</span></td>
+                    </tr>
+                    {{end}}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right " id="resourcepage">
+                  {{if  .resource.Pref}}
+                  <li class="page" id="prevs" value=0><a href="#"  ><<</a></li>
+                  {{else}}
+                  <li class="disabled page" id="prevs" value=0><a href="#" ><<</a></li>
+                  {{end}}
+                  <li class=""><a href="#" id="pages1" >{{.resource.Page}}</a></li>
+                  {{if  .resource.Next}}
+                   <li class="page" id="nexts" value=1><a href="#"  >>></a></li>
+                  {{else}}
+                    <li class="disabled page" id="nexts" value=1><a href="#" >>></a></li>
+                  {{end}}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+    </div>
+          <!-- nav-tabs-custom -->
+          <div id="detatil">
+            <!-- 查看的具体内容出现的位置 -->
+          </div>
+  </div>
+
+  <script src="../static/js/user.js"></script>
+  <script type="text/javascript">
+    $(document).on('click', '#collapse', function(event) {
+        $(this).collapse()
+    });
+  </script>
+
+  

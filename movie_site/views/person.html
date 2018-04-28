@@ -385,17 +385,21 @@
                         <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;" value="{{.talk.Page}}" id="pertomyreview">加载更多</button>
                 </div>
                 <div id="page4-2 " class="hidden sysmsg">
-                    <div class="row mtb2 pl0 pr0">
-                        <div class="col-sm-12">
-                            <div class="panel panel-default ">
-                                <div class="panel-body">
-                                    <p>title&nbsp;&nbsp;<small class="small">2018-12-12</small></p>
-                                    <p>content</p>
+                    <div id="sysmsgbody">
+                        {{range $index,$s := .system.Object }}
+                        <div class="row mtb2 pl0 pr0">
+                            <div class="col-sm-12">
+                                <div class="panel panel-default ">
+                                    <div class="panel-body">
+                                        <p>{{$s.Title}}</p>
+                                        <p>{{$s.Content}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {{end}}
                     </div>
-                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;">加载更多</button>
+                    <button class="btn btn-info col-sm-3 col-sm-offset-4" style="margin-bottom: 10px;" value="{{.system.Page}}" id="systempage">加载更多</button>
                     <p class="col-sm-6">&nbsp;</p>
                 </div>
             </div>
@@ -810,7 +814,47 @@
             }
         })
     });
-// 
+// 查看系统回复
+    $("#systempage").click(function(){
+        console.log(123213)
+        var page = $(this).attr("value")
+        if (page == 0){
+            alert("已经是尾页了")
+            return
+        }
+        var $this = $(this)
+        page = parseInt(page)+1
+        $.ajax({
+            url: '/user/systemmsglist',
+            type: 'get',
+            dataType: 'json',
+            data: {"page": page},
+            success:function(result){
+                console.log(result)
+                if (result.Status){
+                     if (result.Object == null){
+                        alert(已经是尾页了)
+                        $this.attr("value",0)
+                        return
+                    }
+                    for(var i = 0;i<result.Object.length;i++){
+                        var text = "<div class='row mtb2 pl0 pr0'>"+
+                                        "<div class='col-sm-12'>"+
+                                            "<div class='panel panel-default ''>"+
+                                                "<div class='panel-body'>"+
+                                                    "<p>"+result.Object[i].Title+"</p>"+
+                                                    "<p>"+result.Object[i].Content+"</p>"+
+                                                "</div>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</div>"
+                        $("#sysmsgbody").append(text)    
+                    }
+                    $this.attr("value",result.Page)
+                }
+            }
+        })
+    });
 // 三级导航提意见
     $("#advise li").click(function(){
         $("#advise li").removeClass('active')
@@ -886,6 +930,7 @@
             }
         })
     });
+
 </script>
 </body>
 </html>

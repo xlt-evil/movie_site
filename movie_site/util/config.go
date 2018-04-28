@@ -16,6 +16,7 @@ var (
 	Person_img  string     //头像的存储前缀
 	Movie_img string//电影海报前缀
 	Source_path string //电影资源
+	News_img string //新闻图片路径
 )
 
 func init() {
@@ -32,6 +33,7 @@ func init() {
 	Person_img = config["person_img"]
 	Movie_img = config["movie_img"]
 	Source_path = config["movie_vedio"]
+	News_img = config["news_img"]
 	Rc, Re = RedisParse(RedisConfig)
 	beego.Info("----------------")
 	beego.Info("运行模式", RunMode)

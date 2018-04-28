@@ -34,13 +34,11 @@ type MoiveAttribute struct {
 	Score      float64 `description:"评分"`
 	Year       string  `description:"年份"`
 }
-
 //地区
 type Area struct {
 	Id int
 	Name string
 }
-
 //类型
 type Type struct {
 	Id int
@@ -231,8 +229,8 @@ func HotMovie()(m []Movie,err error){
 			LIMIT 0,8`
 	_,err = orm.NewOrm().Raw(sql).QueryRows(&m)
 	return
-
 }
+
 //真假电影人气
 func UpPopularity(id int)(err error){
 	sql := `UPDATE movie_attribute SET popularity = popularity+1

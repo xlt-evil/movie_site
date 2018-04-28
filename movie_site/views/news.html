@@ -94,6 +94,9 @@
 		.hidden {
 			display: hidden;
 		}
+		.gonews{
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body  style=" background-color: #f4f5f7">
@@ -142,84 +145,62 @@
 			<h3>最新资讯</h3>
 			<hr>	
 		</div>
+		{{range $index,$n := .news.Object}}
 		<div class="col-sm-3">
-			<div class="thumbnail">
-				<img src="4.jpg">
+			<a class="thumbnail"  style="text-decoration: none;" href="/newsdetail?id={{$n.Id}}">
+				<img src="{{$n.Img}}">
 				<div class="caption">
-					<h3 class="text-center">恋爱回旋</h3>
-					<p class="gray text-center">2018-9-9</p>
-					<hr>
-					<p  style="word-break:break-all">13333333333333333333333333333333333333333333333kmkfnj3332</p>
-				</div>
-			</div>
-		</div>
-			<div class="col-sm-3">
-			<a class="thumbnail" href="" style="text-decoration: none;">
-				<img src="static/img/4.jpg" style="height: 150px;">
-				<div class="caption">
-					<h3 class="text-center">恋爱回旋</h3>
-					<p class="gray text-center">2018-9-9</p>
-					<hr>
-					<p  style="word-break:break-all">13333333333333333333333333333333333333333333333kmkfnj3332</p>
+					<h3 class="text-center">{{$n.Title}}</h3>
+					<p class="gray text-center">{{$n.Point}}</p>
 				</div>
 			</a>
 		</div>
-			<div class="col-sm-3">
-			<div class="thumbnail">
-				<img src="4.jpg">
-				<div class="caption">
-					<h3 class="text-center">恋爱回旋</h3>
-					<p class="gray text-center">2018-9-9</p>
-					<hr>
-					<p  style="word-break:break-all">13333333333333333333333333333333333333333333333kmkfnj3332</p>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-3">
-			<div class="thumbnail">
-				<img src="4.jpg">
-				<div class="caption">
-					<h3 class="text-center">恋爱回旋</h3>
-					<p class="gray text-center">2018-9-9</p>
-					<hr>
-					<p  style="word-break:break-all">13333333333333333333333333333333333333333333333kmkfnj3332</p>
-				</div>
-			</div>
-		</div>
+		{{end}}
 		<div class="col-sm12">
 			<ul class="nav nav-tabs  col-sm-12 " role="tablist" id="mytab">
 				<li role="presentation" class="active" ><a href="" value="1">最新资讯</a></li>
 				<li role="presentation"><a href="" value="2" id="officialmsg">官方消息</a></li>
 			</ul>
-
 		</div>
 		<div class="col-sm-12 news" style="margin-top: 2%;border-right:none;">
 			<div class="NEWS ">
-				<div class="col-sm-4 news" id="news">
-					<img src="1.jpg" class="img-responsive">
+				<div id="newslist">
+				{{range $index,$n := .news1.Object}}
+				<a class="row gonews" href="/newsdetail?id={{$n.Id}}">
+				<div class="col-sm-4 news" >
+					<img src="{{$n.Img}}" class="img-responsive">
 				</div>
 				<div class="col-sm-8">
 					<div class="row">
-						<h3 class="text-left lead" style="padding-left: 2%;"><strong>Title</strong></h3>
+						<h3 class="text-left lead" style="padding-left: 2%;"><strong>{{$n.Title}}</strong></h3>
 						<hr>
 					</div>
 					<div class="row">
-						<p class="text-left lead" style="padding-left: 2%;word-break:break-all;">123aaaaaaaaaaaaaaaaaaaaaaaaabflulbflbalwbflbfsd</p>
+						<p class="text-left lead" style="padding-left: 2%;word-break:break-all;">{{$n.Point}}</p>
 					</div>
 				</div>
+				</a>
+				{{end}}
+				</div>
+				<button class="btn btn-default col-sm-offset-5"  id="newsButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off" value="1">
+						加载更多
+				</button>
 			</div>
+
+
 			<!-- 官方消息 -->
 			<div class="OFFICAL hidden">
 				<div class="col-sm-12 pno" id="official">
 				</div>
+				<div class="col-sm-12">
+					<button class="btn btn-default col-sm-offset-5"  id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off" value="1">
+						加载更多
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
-		<div class="col-sm-12">
-			<button class="btn btn-default col-sm-offset-5"  id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off" value="1">
-				加载更多
-			</button>
-		</div>
+
  	<div style="width: 100%;margin-top: 2%;" class="bottom " >
 	    <div class="jumbotron copy" style="margin: 0">
 	    	<div class="container">
@@ -329,6 +310,60 @@
   				}
   			}	
   		})
+  	})
+
+  	$("#newsButton").click(function(){
+		var $btn = $(this).button('loading')
+	    var url = ""
+	    if ($(".NEWS").hasClass('hidden')){
+	    	url = "/msg/newsmsg"
+	    }else {
+	    	url = "/msg/newsmsg"
+	    }
+	    var page  = $(this).attr("value")
+	    if (page == 0){
+	    	alert("已经到底了！")
+	    	$btn.button('reset')
+	    	return
+	    }
+	    page  = parseInt($(this).attr("value"))+1
+	    $.ajax({
+	    	url: url,
+	    	type: 'get',
+	    	dataType: 'json',
+	    	data: {"page": page},
+	    	success:function(result){
+	    		console.log("12321313")
+  				if (result.Status) {
+  					console.log(result.Object)
+  					for(var i = 0;i<result.Object.length;i++){
+  						var text = "<a class='row gonews' href='/newsdetail?id="+result.Object[i].Id+"'>"+
+										"<div class='col-sm-4 news' >"+
+										"<img src="+result.Object[i].Img+" class='img-responsive'>"+
+									"</div>"+
+									"<div class='col-sm-8'>"+
+										"<div class='row'>"+
+											"<h3 class='text-left lead' style='padding-left: 2%;'><strong>"+result.Object[i].Title+"</strong></h3>"+
+											"<hr>"+
+										"</div>"+
+									"<div class='row'>"+
+									"<p class='text-left lead' style='padding-left: 2%;word-break:break-all;'>"+result.Object[i].Point+"</p>"+
+									"</div>"+
+									"</div>"+
+									"</a>"
+						$("#newslist").append(text)
+  					}
+  					if(result.Next){
+  						$('#newsButton').attr("value",page)
+  					}else{
+  						$('#newsButton').attr("value",0)//没有了
+  					}
+  					$btn.button('reset')
+  				}else{
+  					alert(result.Msg)
+  				}
+	    	}
+	    })
   	})
 	</script>
 </body>

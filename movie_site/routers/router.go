@@ -20,6 +20,7 @@ func init() {
 	beego.Router("/demo",&controllers.MainController{},"get:Demo")
 	beego.Router("/upload",&controllers.MainController{},"post:Upload")
 	beego.Router("/indexreview",&controllers.MainController{},"get:IndexReview")
+	beego.Router("/newsdetail",&controllers.MainController{},"get:NewsDetail")
 
 
     //登录注册模块

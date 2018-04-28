@@ -21,9 +21,12 @@ func (this *UserController)ToPerson(){
 	resp3 := services.MyAdviseList(this.User.Uid,1)//我的意见
 	resp4 := services.ElesPerToMyReview(this.User.Uid,1)//别人对我影评评论
 	times ,_:= models.HistoryRecordCount(this.User.Uid)//看过的电影
-	birthday,_ := models.GetBirthdayByUid(this.User.Uid)
+	birthday,_ := models.GetBirthdayByUid(this.User.Uid)//系统回复
 	s ,_:= time.Parse("2006-01-02",birthday)
 	realbirth := s.Format("01-02")
+	sys := services.CheckSystemBack(this.User.Uid,1)
+	fmt.Println("qdsjdjasdnjiasnd            ",sys.Msg)
+
 	this.Data["movie"] = resp
 	this.Data["review"] = resp1
 	this.Data["history"] = resp2
@@ -31,6 +34,7 @@ func (this *UserController)ToPerson(){
 	this.Data["talk"] = resp4
 	this.Data["time"] = times
 	this.Data["birthday"] = realbirth
+	this.Data["system"] = sys
 	this.TplName = "person.html"
 }
 //个人电影收藏
@@ -407,6 +411,22 @@ func (this *UserController)ELsePerToMyReview(){
 		return
 	}
 	resp = services.ElesPerToMyReview(this.User.Uid,page)
+	return
+}
+//系统用户回复
+func (this *UserController)SystemMsgList(){
+	var resp services.MovieResp
+	resp.Status = false
+	defer func() {
+		this.Data["json"] = resp
+		this.ServeJSON()
+	}()
+	page,err := this.GetInt("page")
+	if err != nil {
+		resp.Msg = "解析参数错误"
+		return
+	}
+	resp = services.CheckSystemBack(this.User.Uid,page)
 	return
 }
 

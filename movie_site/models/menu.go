@@ -19,7 +19,6 @@ func FindAreaMenu()(a []Menu,err error){
 	return
 }
 
-
 func FindTypeMenu()(a []Menu,err error){
 	sql := `SELECT * From type`
 	_,err = orm.NewOrm().Raw(sql).QueryRows(&a)

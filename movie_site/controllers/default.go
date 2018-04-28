@@ -36,12 +36,19 @@ func (this *MainController)Get(){
 	key := make([]string,2)
 	key[0] = "日本"
 	key[1] = "韩国"
-	resp := services.FindMovieListByIndex(key)
-	resp1 := services.IndexOffical()
-	resp2 := services.IndexReview()
+	resp := services.FindMovieListByIndex(key)//首页热门电影
+	resp1 := services.IndexOffical()//首页官方消息
+	resp2 := services.IndexReview()//首页评论
+	resp3 := services.FindNewMsg(1,util.OfficalSize)//首页轮播新闻
+	resp4 := services.FindNewMsg2(1,util.OfficalSize)//最受欢迎的新闻
+	fmt.Println("黄希云",resp3)
 	this.Data["movies"] = resp
 	this.Data["offical"] = resp1
 	this.Data["review"] = resp2
+	this.Data["news1"] = resp3
+	this.Data["news2"] = resp4
+	fmt.Println()
+	fmt.Println(resp3.Object)
 	this.TplName = "index.html"
 }
 //电影库
@@ -126,7 +133,24 @@ func (this *MainController)ShowTalk(){
 func(this *MainController)News(){
 	//resp := services.FindOfficalMsg(1)
 	//this.Data["official"] = resp
+	news := services.FindNewMsg(1,4)
+	news1 := services.FindNewMsg2(1,3)
+	this.Data["news"] = news
+	this.Data["news1"] = news1
 	this.TplName = "news.html"
+}
+
+//新闻具体详情页面
+func(this *MainController)NewsDetail(){
+	id,err := this.GetInt("id")
+	if err != nil {
+		this.Abort("404")
+		return
+	}
+	resp,count := services.GetNewsDetail(id)
+	this.Data["news"] = resp
+	this.Data["count"] = count
+	this.TplName = "newsshow.html"
 }
 
 

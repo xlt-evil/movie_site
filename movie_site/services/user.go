@@ -337,6 +337,36 @@ func ElesPerToMyReview(uid string,page int)(resp MovieResp){
 	}
 	return
 }
+
+//查看系统回复
+func CheckSystemBack(uid string,page int)(resp MovieResp){
+	resp.Status = false
+	pageIndex := util.PageIndex(page,util.UserCenterSize)
+	m,err := models.SystemList(uid,pageIndex,util.UserCenterSize)
+	if err != nil {
+		fmt.Println(err.Error())
+		resp.Msg = "查看系统回复失败"
+		return
+	}
+	count,err := models.SystemListCount(uid)
+	if err != nil {
+		resp.Msg = "查看总条数失败"
+		return
+	}
+	pages := util.PageNum(count,util.UserCenterSize)
+	ok :=pagination(&resp,pages,count,page,util.UserCenterSize)
+	if !ok {
+		return
+	}
+	resp.Object = m
+	resp.Status = true
+	resp.Page = page
+	if !resp.Next {
+		resp.Page = 0
+	}
+	return
+
+}
 //分页方法
 func pagination(resp *MovieResp,pages,count,page,pageSize int)(bool){
 	if page < pages {
